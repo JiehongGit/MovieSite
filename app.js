@@ -1,6 +1,6 @@
 //加载express模块
 var express = require('express')
-//
+
 var path = require('path')
 //设置端口(也可以从命令行中设置全局变量)
 //process是一个全局变量，获取环境变量和外围传入的参数
@@ -11,9 +11,9 @@ var app = express()
 app.set('views','./views/pages')
 //设置默认模板引擎
 app.set('view engine','pug')
-//
+
 //app.use(express.bodyParser())
-//
+
 app.use(express.static(path.join(__dirname, 'bower_components')))
 //监听端口
 app.listen(port)
@@ -58,7 +58,7 @@ app.get('/movie/:id',function(req,res){
 	res.render('detail',{
 		title: 'MovieSite 详情页',
 		movie: {
-			doctor: '何塞·帕迪里亚',
+            director: '何塞·帕迪里亚',
 			country: '美国',
 			title: '机械战警',
 			year: 2014,
@@ -76,7 +76,7 @@ app.get('/admin/movie',function(req,res){
 		title: 'MovieSite 后台录入页',
 		movie: {
 			title: "",
-			doctor: "",
+            director: "",
 			country: "",
 			year: "",
 			poster: "",
@@ -94,7 +94,7 @@ app.get('/admin/list',function(req,res){
 		movies: [{
 			title: '机械战警',
 			_id: 1,
-			doctor: '何塞·帕迪里亚',
+            director: '何塞·帕迪里亚',
 			country: '美国',
 			year: 2014,
 			poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5',
