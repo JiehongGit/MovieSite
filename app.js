@@ -1,41 +1,55 @@
 //加载express模块
 var express = require('express')
-var moongoose = require('mongoose')
-var Movie = require('./models/movie')
 var path = require('path')
-var _ = require('underscore')
-//设置端口(也可以从命令行中设置全局变量)
-//process是一个全局变量，获取环境变量和外围传入的参数
-var port = process.env.PORT || 3000
+//不引入不行
+var bodyParser = require('body-parser')
 //启动web服务器
 var app = express()
+//引入mongoose模块
+var mongoose = require('mongoose')
+var Movie = require('./models/movie')
+var _ = require('underscore')
+//设置端口(也可以从命令行中设置全局变量)，process是一个全局变量，获取环境变量和外围传入的参数
+var port = process.env.PORT || 3000
+//设置静态资源
+var serveStatic = require('serve-static')
 
-mongoose.connect('mongodb;//localhost/moviesite')
+//创建数据库连接
+mongoose.connect('mongodb;//localhost:27017/movie')
 
 //实例赋给一个变量
 app.set('views','./views/pages')
 //设置默认模板引擎
 app.set('view engine','pug')
 
-//app.use(express.bodyParser())
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
+//extended为false表示使用querystring来解析数据，这是URL-encoded解析器
+//返回一个只解析urlencoded消息体的中间件，只接受utf-8对消息体进行编码，同时支持自动的gzip/deflate编码解析过的消息放在req.body对象中。这个对象包含的键值对，同时值可以是一个string或者一个数组(当extended为false的时候)。也可以是任何类型(当extended设置为true)
+app.use(bodyParser.urlencoded({ extended: true }))
+//上面那个要加extended:true，否则会在post的时候出错
 
-app.use(express.static(path.join(__dirname, 'bower_components')))
+//app.use(express.bodyParser())
+app.locals.moment = require('moment')
+
+app.use(bodyParser.json());
+// 设置静态目录，使view中引入的东西路径正确
+app.use(serverStatic('bower_components'))
+
+app.use(serverStatic(path.join(__dirname,'bower_components')))
+
 //监听端口
 app.listen(port)
 //打印日志
-console.log('serer started on port' + port)
+console.log('serer started on port ${port}')
 
 //路由添加
 app.get('/',function(req,res){
-	Movie.fetch(function (err,movies) {
+	Movie.fetch(function (err,movie) {
 		if(err){
 			console.log(err)
 		}
 		res.render('index',{
 			title: 'MovieSite',
-			movies:movies
+			movies:movie
         })
 		/*movies: [{
             title: '机械战警',
