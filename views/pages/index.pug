@@ -9,5 +9,5 @@ block content
             a(href="/movie/" + item._id)
               img(src = item.poster, alt = item.title)
             .caption
-              h4 #{item.title}
+              h4= item.title
               p.text-center: a.btn.btn-primary(href="/movie/" + item._id, role="button") 观看视频
