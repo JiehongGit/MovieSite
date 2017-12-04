@@ -5,8 +5,8 @@ block content
     .row
       form.form-horizontal(method="post",action="/admin/movie/new")
 
-        //影藏更新表单域
-        input(type="hidden",name="movie[_id]",value=movie._id)
+        //隐藏更新表单域
+        input(type="hidden",name="movie[_id]",value = movie._id)
 
         .form-group
           label.col-sm-2.control-label(for="inputTitle") 电影名字
