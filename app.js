@@ -1,24 +1,32 @@
 //加载express模块
-var express = require('express')
-// var path = require('path')
-//不引入不行
-var bodyParser = require('body-parser')
+const express = require('express')
 //启动web服务器
-var app = express()
+const app = express()
+const path = require('path')
+//不引入不行
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 //引入mongoose模块
-var mongoose = require('mongoose')
-var Movie = require('./models/movie')
-var _ = require('underscore')
+const Movie = require('./models/movie.js')
+const _underscore = require('underscore')
+
+var pug = require('pug')
+
 //设置端口(也可以从命令行中设置全局变量)，process是一个全局变量，获取环境变量和外围传入的参数
 var port = process.env.PORT || 3000
+
+var moment = require('moment')
+
 //设置静态资源
-var serveStatic = require('serve-static')
+//const serveStatic = require('serve-static');
+
 //创建数据库连接
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://localhost/movie',{useMongoClient: true})
+mongoose.connect('mongodb://localhost:27017/moviesite',{useMongoClient: true})
+
 
 //实例赋给一个变量,设置视图根目录
-app.set('views','./views/pages')
+app.set('views',path.join(__dirname,"./views/pages"))
 //设置默认模板引擎
 app.set('view engine','pug')
 
@@ -28,43 +36,44 @@ app.set('view engine','pug')
 3、这个对象包含的键值对，同时值可以是一个string或者一个数组(当extended为false的时候)。也可以是任何类型(当extended设置为true)
 4、加extended:true，否则会在post的时候出错
 5、！！！解析 POST 方法中的表单数据*/
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 //app.use(express.bodyParser())
 // app.locals.moment = require('moment')
-// app.use(bodyParser.json());
 
 // 设置静态目录，使view中引入的东西路径正确
-app.use(serveStatic('bower_components'))
+app.use(express.static(path.join(__dirname,'bower_components')))
 // 使用 Moment.js
 app.locals.moment = require('moment')
 
-// app.use(serverStatic(path.join(__dirname,'bower_components')))
+//app.use(serveStatic(path.join(__dirname,'bower_components')))
 
 //监听端口
-/app.listen(port)
+app.listen(port)
 //打印日志
-console.log('serer started on port ${port}')
+console.log('Server is running at http://localhost:' + port + '/')
 
 //路由添加
 
 //错误页
-function miss(res,err) {
+/*function miss(res,err) {
 	res.render('miss',{
 		title: '发生错误',
 		err: err
 	})
-}
+}*/
 
 //首页
 app.get('/',function(req,res){
 	Movie.fetch(function (err,movies) {
 		if(err){
-			miss(res,err)
-			return
+		    console.log(err)
+			// miss(res,err)
+			// return
 		}
 		res.render('index',{
-			title: 'MovieSite',
+			title: 'MovieSite 首页',
 			movies:movies
         })
 		/*movies: [{
@@ -98,11 +107,11 @@ app.get('/',function(req,res){
 //detail page
 app.get('/movie/:id',function(req,res){
 	var id = req.params.id
-	Movie.findById(id,function (err,movie) {
-        if (err) {
+	Movie.findById(id, function (err,movie) {
+        /*if (err) {
             miss(res, err)
             return
-        }
+        }*/
         res.render('detail', {
             title: movie.title,
             movie: movie
@@ -124,7 +133,7 @@ app.get('/movie/:id',function(req,res){
 })
 
 //admin page
-app.get('/admin/movie',function(req,res){
+app.get('/admin/movie', function(req,res){
 	res.render('admin',{
 		title: 'MovieSite 后台录入页',
 		movie: {
@@ -141,14 +150,14 @@ app.get('/admin/movie',function(req,res){
 })
 
 //admin update movie
-app.get('/admin/update/:id',function (req,res) {
+app.get('/admin/update/:id', function (req,res) {
 	var id = req.params.id
     if (id) {
         Movie.findById(id, function (err, movie) {
-            if (err) {
+            /*if (err) {
                 miss(res, err)
                 return
-            }
+            }*/
             res.render('admin', {
                 title: '后台更新页',
                 movie: movie
@@ -158,21 +167,23 @@ app.get('/admin/update/:id',function (req,res) {
 })
 
 //admin post movie 后台提交路由
-app.post('/admin/movie/new',function (res,req) {
+app.post('/admin/movie/new', function (req, res) {
 	var id = req.body.movie._id
 	var movieObj = req.body.movie
 	var _movie
-	if(id !== 'undefined'){
-		Movie.findById(id,function (err,movie) {
-			if(err){
-                miss(res, err)
-                return
+	if (id !== 'undefined'&& id !==''){
+		Movie.findById(id, function (err, movie) {
+			if (err){
+                // miss(res, err)
+                // return
+                console.log(err)
 			}
-			_movie = _.extend(movie,movieObj)
-			_movie.save(function (err,movie) {
-				if(err){
-                    miss(res, err)
-                    return
+			_movie = _underscore.extend(movie, movieObj)
+			_movie.save(function (err, movie) {
+				if (err){
+                    // miss(res, err)
+                    // return
+                    console.log(err)
 				}
 				res.redirect('/movie/' + movie._id)
             })
@@ -189,8 +200,8 @@ app.post('/admin/movie/new',function (res,req) {
             summary: movieObj.summary,
             flash: movieObj.flash
 		})
-        _movie.save(function (err,movie) {
-            if(err){
+        _movie.save(function (err, movie) {
+            if (err){
                 miss(res, err)
                 return
             }
@@ -203,12 +214,13 @@ app.post('/admin/movie/new',function (res,req) {
 app.get('/admin/list',function(req,res){
     Movie.fetch(function (err,movies) {
         if(err){
-            miss(res, err)
-            return
+            // miss(res, err)
+            // return
+            console.log(err)
         }
         res.render('list',{
-            title: '列表页',
-            movies:movies
+            title: 'MovieSite 列表页',
+            movies: movies
         })
     })
 	/*res.render('list',{
@@ -232,8 +244,9 @@ app.delete('/admin/list', function (req, res) {
     if (id) {
         Movie.remove({_id: id}, function (err, movie) {
             if (err) {
-                miss(res, err)
-                return
+                // miss(res, err)
+                // return
+                console.log(err)
             }
             res.json({success: 1})
         })
