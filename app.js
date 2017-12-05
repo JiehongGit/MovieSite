@@ -43,7 +43,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // app.locals.moment = require('moment')
 
 // 设置静态目录，使view中引入的东西路径正确
-app.use(express.static(path.join(__dirname,'bower_components')))
+app.use(express.static(path.join(__dirname,'public')))
 // 使用 Moment.js
 app.locals.moment = require('moment')
 
