@@ -248,7 +248,9 @@ app.delete('/admin/list', function (req, res) {
                 // return
                 console.log(err)
             }
-            res.json({success: 1})
+            else {
+                res.json({success: 1})
+            }
         })
     }
 })

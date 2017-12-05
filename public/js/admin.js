@@ -3,12 +3,13 @@
 $(function(){
     $('.del').click(function(e){ //e 是被jquery改造后的event对象
         //return confirm('确定要删除吗')
-        var target = $(e.target) //点的是哪个按钮
+        var target = $(e.target) //拿到当前点击按钮
         var id = target.data('id')
         var tr = $('.item-id-' + id) //拿到表格的一行
 
+        //调用ajax
         $.ajax({
-            method: 'DELETE',
+            method: 'DELETE', //异步请求为delete
             url: '/admin/list?id=' + id
         })
             .done(function(results){
