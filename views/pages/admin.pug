@@ -3,10 +3,9 @@ extends ../layout
 block content
   .container
     .row
-      form.form-horizontal(method="post",action="/admin/movie/new")
+      form.form-horizontal(method="post", action="/admin/movie/new")
         //隐藏更新表单域
         input(type="hidden", name="movie[_id]", value=movie._id)
-
         .form-group
           label.col-sm-2.control-label(for="inputTitle") 电影名字
           .col-sm-10
@@ -34,11 +33,11 @@ block content
         .form-group
           label.col-sm-2.control-label(for="inputYear") 上映年代
           .col-sm-10
-            input#inputYear.form-control(type="text",name="movie[year]",value=movie.year)
+            input#inputYear.form-control(type="number",name="movie[year]",value=movie.year)
         .form-group
           label.col-sm-2.control-label(for="inputSummary") 电影简介
           .col-sm-10
-            textarea#inputSummary.form-control(name="movie[summary]",values=movie.summary)
+            textarea#inputSummary.form-control(name="movie[summary]")= movie.summary
         .form-group
           .col-sm-offset-2.col-sm-10
             button.btn.btn-default(type="submit") 录入

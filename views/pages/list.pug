@@ -24,8 +24,8 @@ block content
                 td= item.country
                 td= item.language
                 td= item.year
-                td= moment(item.meta.createAt).format('YYYY-MM-DD HH:mm')
-                td= moment(item.meta.updateAt).format('YYYY-MM-DD HH:mm')
+                td= moment(item.meta.createAt).format("YYYY-MM-DD HH:mm")
+                td= moment(item.meta.updateAt).format("YYYY-MM-DD HH:mm")
                 td: a(target="_blank",href="../movie/" + item._id) 查看
                 td: a(target="_blank",href="../admin/update/" + item._id) 修改
                 td
