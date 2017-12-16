@@ -1,33 +1,41 @@
-//加载express模块
-const express = require('express')
-//启动web服务器
-const app = express()
-const path = require('path')
-//不引入不行
-const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
-//引入mongoose模块
-const Movie = require('./models/movie.js')
-const _underscore = require('underscore')
-
+// 加载express模块
+var express = require('express')
+// 创建一个express应用,express()是一个由express模块导出的入口(top-level)函数
+var app = express()
+//引入path模块
+var path = require('path')
+// 不引入不行,新版本中bodyParser不在express中而是单独存在的，引入前还需npm install body-parser，再require，再app.use()
+var bodyParser = require('body-parser')
+// 引入mongoose模块
+var mongoose = require('mongoose')
+//
+var Movie = require('./models/movie.js')
+//
+var _underscore = require('underscore')
+// 引入pug模块
 var pug = require('pug')
-
-//设置端口(也可以从命令行中设置全局变量)，process是一个全局变量，获取环境变量和外围传入的参数
+// 设置端口(也可以从命令行中设置全局变量)，process是一个全局变量，获取环境变量和外围传入的参数
 var port = process.env.PORT || 3000
-
+// 引入时间模块
 var moment = require('moment')
 
-//设置静态资源
-//const serveStatic = require('serve-static');
+/*设置静态资源
+const serveStatic = require('serve-static');*/
 
-//创建数据库连接
+/*
+启动M]mongoDB数据库命令
+mongod --dbpath D:\MongoDB\data
+*/
+
+// 由于mongoose中已不自带Promise，所以需要设置一个全局Promise
 mongoose.Promise = global.Promise
+// 创建数据库连接
 mongoose.connect('mongodb://localhost:27017/moviesite',{useMongoClient: true})
 
 
-//实例赋给一个变量,设置视图根目录
+// 实例赋给一个变量,设置视图根目录
 app.set('views',path.join(__dirname,"./views/pages"))
-//设置默认模板引擎
+// 设置默认模板引擎
 app.set('view engine','pug')
 
 /*
@@ -39,7 +47,7 @@ app.set('view engine','pug')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-//app.use(express.bodyParser())
+// app.use(express.bodyParser())
 // app.locals.moment = require('moment')
 
 // 设置静态目录，使view中引入的东西路径正确
@@ -47,16 +55,16 @@ app.use(express.static(path.join(__dirname,'public')))
 // 使用 Moment.js
 app.locals.moment = require('moment')
 
-//app.use(serveStatic(path.join(__dirname,'bower_components')))
+// app.use(serveStatic(path.join(__dirname,'bower_components')))
 
-//监听端口
+// 监听端口
 app.listen(port)
-//打印日志
+// 打印日志
 console.log('Server is running at http://localhost:' + port + '/')
 
-//路由添加
+/* ---------- 路由添加 ---------- */
 
-//错误页
+// 错误页
 /*function miss(res,err) {
 	res.render('miss',{
 		title: '发生错误',
@@ -64,10 +72,11 @@ console.log('Server is running at http://localhost:' + port + '/')
 	})
 }*/
 
-//首页
+// 首页
 app.get('/',function(req,res){
 	Movie.fetch(function (err,movies) {
 		if(err){
+		    // 打印错误
 		    console.log(err)
 			// miss(res,err)
 			// return
@@ -104,8 +113,9 @@ app.get('/',function(req,res){
 	})
 })
 
-//detail page
+// detail page
 app.get('/movie/:id',function(req,res){
+    // params方法用于从express路由器获取参数
 	var id = req.params.id
 	Movie.findById(id, function (err,movie) {
         /*if (err) {
@@ -132,7 +142,7 @@ app.get('/movie/:id',function(req,res){
         }*/
 })
 
-//admin page
+// admin page
 app.get('/admin/movie', function(req,res){
 	res.render('admin',{
 		title: 'MovieSite 后台录入页',
@@ -149,7 +159,7 @@ app.get('/admin/movie', function(req,res){
 	})
 })
 
-//admin update movie
+// admin update movie
 app.get('/admin/update/:id', function (req,res) {
 	var id = req.params.id
     if (id) {
@@ -166,7 +176,7 @@ app.get('/admin/update/:id', function (req,res) {
 	}
 })
 
-//admin post movie 后台提交路由
+// admin post movie 后台提交路由
 app.post('/admin/movie/new', function (req, res) {
 	var id = req.body.movie._id
 	var movieObj = req.body.movie
@@ -210,7 +220,7 @@ app.post('/admin/movie/new', function (req, res) {
 	}
 })
 
-//list page
+// list page
 app.get('/admin/list',function(req,res){
     Movie.fetch(function (err,movies) {
         if(err){

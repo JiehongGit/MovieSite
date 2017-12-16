@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 
-// Movie 的结构概要（模式）
+// Movie的结构概要（模式）
 var MovieSchema = new mongoose.Schema({
     director: String,
     title: String,
@@ -22,8 +22,8 @@ var MovieSchema = new mongoose.Schema({
     }
 })
 
-//为模式添加方法
-// movieSchema.pre 表示每次存储数据之前都先调用这个方法
+// 为模式添加方法
+// movieSchema.pre表示每次存储数据之前都先调用这个方法
 MovieSchema.pre('save',function (next) {
     if (this.isNew){
         this.meta.createAt = this.meta.updateAt = Date.now()
@@ -34,7 +34,7 @@ MovieSchema.pre('save',function (next) {
     next()
 })
 
-// movieSchema 模式的静态方法
+// movieSchema模式的静态方法
 MovieSchema.static('findByID',function(id,cb){
     return this
         .findOne({_id:id})
