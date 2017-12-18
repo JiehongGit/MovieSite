@@ -1,23 +1,23 @@
 // 加载express模块
-var express = require('express')
+var express = require('express');
 // 创建一个express应用,express()是一个由express模块导出的入口(top-level)函数
-var app = express()
-//引入path模块
-var path = require('path')
+var app = express();
+// 引入path模块
+var path = require('path');
 // 不引入不行,新版本中bodyParser不在express中而是单独存在的，引入前还需npm install body-parser，再require，再app.use()
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 // 引入mongoose模块
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 //
-var Movie = require('./models/movie.js')
-//
-var _underscore = require('underscore')
+var Movie = require('./models/movie.js');
+// 引入underscore模块
+var _underscore = require('underscore');
 // 引入pug模块
-var pug = require('pug')
+var pug = require('pug');
 // 设置端口(也可以从命令行中设置全局变量)，process是一个全局变量，获取环境变量和外围传入的参数
-var port = process.env.PORT || 3000
+var port = process.env.PORT || 3000;
 // 引入时间模块
-var moment = require('moment')
+var moment = require('moment');
 
 /*设置静态资源
 const serveStatic = require('serve-static');*/
@@ -28,15 +28,15 @@ mongod --dbpath D:\MongoDB\data
 */
 
 // 由于mongoose中已不自带Promise，所以需要设置一个全局Promise
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise;
 // 创建数据库连接
-mongoose.connect('mongodb://localhost:27017/moviesite',{useMongoClient: true})
+mongoose.connect('mongodb://localhost:27017/moviesite',{useMongoClient: true});
 
 
 // 实例赋给一个变量,设置视图根目录
-app.set('views',path.join(__dirname,"./views/pages"))
+app.set('views',path.join(__dirname,"./views/pages"));
 // 设置默认模板引擎
-app.set('view engine','pug')
+app.set('view engine','pug');
 
 /*
 1、extended为false表示使用querystring来解析数据，这是URL-encoded解析器
@@ -44,23 +44,23 @@ app.set('view engine','pug')
 3、这个对象包含的键值对，同时值可以是一个string或者一个数组(当extended为false的时候)。也可以是任何类型(当extended设置为true)
 4、加extended:true，否则会在post的时候出错
 5、！！！解析 POST 方法中的表单数据*/
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.use(express.bodyParser())
 // app.locals.moment = require('moment')
 
 // 设置静态目录，使view中引入的东西路径正确
-app.use(express.static(path.join(__dirname,'public')))
+app.use(express.static(path.join(__dirname,'public')));
 // 使用 Moment.js
-app.locals.moment = require('moment')
+app.locals.moment = require('moment');
 
 // app.use(serveStatic(path.join(__dirname,'bower_components')))
 
 // 监听端口
-app.listen(port)
+app.listen(port);
 // 打印日志
-console.log('Server is running at http://localhost:' + port + '/')
+console.log('Server is running at http://localhost:' + port + '/');
 
 /* ---------- 路由添加 ---------- */
 
@@ -85,33 +85,8 @@ app.get('/',function(req,res){
 			title: 'MovieSite 首页',
 			movies:movies
         })
-		/*movies: [{
-            title: '机械战警',
-            _id: 1,
-            poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-		},{
-            title: '机械战警',
-            _id: 2,
-            poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-		},{
-            title: '机械战警',
-            _id: 3,
-            poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-		},{
-            title: '机械战警',
-            _id: 4,
-            poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-		},{
-            title: '机械战警',
-            _id: 5,
-            poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-		},{
-            title: '机械战警',
-            _id: 6,
-            poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-		}]*/
 	})
-})
+});
 
 // detail page
 app.get('/movie/:id',function(req,res){
@@ -127,20 +102,7 @@ app.get('/movie/:id',function(req,res){
             movie: movie
         })
     })
-    /*
-    res.render('detail',{
-        title: 'MovieSite' + movie.title,
-        movie: {
-            director: '何塞·帕迪里亚',
-            country: '美国',
-            title: '机械战警',
-            year: 2014,
-            poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5',
-            language: '英语',
-            flash: 'http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf',
-            summary: '《机械战警》是由何塞·帕迪里亚执导，乔尔·金纳曼、塞缪尔·杰克逊、加里·奥德曼等主演的一部科幻电影，改编自1987年保罗·范霍文执导的同名电影。影片于2014年2月12日在美国上映，2014年2月28日在中国大陆上映。影片的故事背景与原版基本相同，故事设定在2028年的底特律，男主角亚历克斯·墨菲是一名正直的警察，被坏人安装在车上的炸弹炸成重伤，为了救他，OmniCorp公司将他改造成了生化机器人“机器战警”，代表着美国司法的未来。'
-        }*/
-})
+});
 
 // admin page
 app.get('/admin/movie', function(req,res){
@@ -157,7 +119,7 @@ app.get('/admin/movie', function(req,res){
 			language: ''
 		}
 	})
-})
+});
 
 // admin update movie
 app.get('/admin/update/:id', function (req,res) {
@@ -174,7 +136,7 @@ app.get('/admin/update/:id', function (req,res) {
             })
         })
 	}
-})
+});
 
 // admin post movie 后台提交路由
 app.post('/admin/movie/new', function (req, res) {
@@ -218,7 +180,7 @@ app.post('/admin/movie/new', function (req, res) {
             res.redirect('/movie/' + movie._id)
         })
 	}
-})
+});
 
 // list page
 app.get('/admin/list',function(req,res){
@@ -233,20 +195,7 @@ app.get('/admin/list',function(req,res){
             movies: movies
         })
     })
-	/*res.render('list',{
-		title: 'MovieSite 列表页',
-
-		movies: [{
-            title: '机械战警',
-            _id: 1,
-            director: '何塞·帕迪里亚',
-            country: '美国',
-            year: 2014,
-            language: '英语',
-            flash: 'http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf',
-        }]
-	})*/
-})
+});
 
 // list delete movie data 列表页删除电影
 app.delete('/admin/list', function (req, res) {
@@ -263,5 +212,5 @@ app.delete('/admin/list', function (req, res) {
             }
         })
     }
-})
+});
 

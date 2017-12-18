@@ -3,16 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.2",
-    "moment": "^2.19.2",
-    "mongoose": "^4.13.5",
-    "pug": "^2.0.0-rc.4",
-    "serve-static": "^1.13.1",
-    "underscore": "^1.8.3"
-  },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,10 +10,18 @@
     "type": "git",
     "url": "git+https://github.com/JiehongGit/MovieSite.git"
   },
-  "author": "",
+  "author": "JiehongLin",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/JiehongGit/MovieSite/issues"
   },
-  "homepage": "https://github.com/JiehongGit/MovieSite#readme"
+  "homepage": "https://github.com/JiehongGit/MovieSite#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "moment": "^2.20.0",
+    "mongoose": "^4.13.7",
+    "pug": "^2.0.0-rc.4",
+    "underscore": "^1.8.3"
+  }
 }
