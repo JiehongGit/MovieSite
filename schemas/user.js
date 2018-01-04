@@ -16,11 +16,11 @@ var UserSchema = new mongoose.Schema({
         unique: true,
         type: String
     },
-    password: {
-        unique: true,
-        type: String
+    password: String,
+    role:{
+        type: Number,
+        default: 0
     },
-
     meta:{
         createAt:{
             type:Date,
@@ -37,7 +37,6 @@ var UserSchema = new mongoose.Schema({
 // 使用pre中间件在用户信息存储前进行密码加密
 UserSchema.pre('save',function (next){
     var user = this;
-
     if (this.isNew){
         this.meta.createAt = this.meta.updateAt = Date.now()
     }
@@ -60,18 +59,30 @@ UserSchema.pre('save',function (next){
     })
 });
 
-// UserSchema模式的静态方法
-UserSchema.static('findByID',function(id,cb){
-    return this
-        .findOne({_id:id})
-        .exec(cb)
-});
+UserSchema.methods = {
+    comparePassword: function (_password, cb) {
+        bcrybt.compare(_password, this.password, function (err, isMatch) {
+            if (err){
+                return cb(err)
+            }
+            cb(null, isMatch)
+        })
+    }
+};
 
-UserSchema.static('fetch',function(cb){
-    return this
-        .find({})
-        .sort('meta.updateAt')
-        .exec(cb)
-});
+// UserSchema模式的静态方法
+UserSchema.static = {
+    fetch: function (cb) {
+        return this
+            .find({})
+            .sort("meta.updateAt")
+            .exec(cb)
+    },
+    findById: function (id,cb) {
+        return this
+            .findOne({_id: id})
+            .exec(cb)
+    }
+};
 
 module.exports = UserSchema;
