@@ -8,8 +8,9 @@ var path = require('path');
 var bodyParser = require('body-parser');
 // 引入mongoose模块
 var mongoose = require('mongoose');
-//
+// 引入相关的模块
 var Movie = require('./models/movie.js');
+var User = require('./models/user.js');
 // 引入underscore模块
 var _underscore = require('underscore');
 // 引入pug模块
@@ -88,10 +89,18 @@ app.get('/',function(req,res){
 	})
 });
 
+// signup
+app.post('/user/signup', function (req,res) {
+    var _user = req.body.user;
+    var user = new User(_user);
+
+    console.log(_user)
+});
+
 // detail page
 app.get('/movie/:id',function(req,res){
     // params方法用于从express路由器获取参数
-	var id = req.params.id
+	var id = req.params.id;
 	Movie.findById(id, function (err,movie) {
         /*if (err) {
             miss(res, err)
@@ -112,9 +121,9 @@ app.get('/admin/movie', function(req,res){
 			title: '',
             director: '',
 			country: '',
-			year: '',
+			age: '',
 			poster: '',
-			flash: '',
+			url: '',
 			summary: '',
 			language: ''
 		}
@@ -123,7 +132,7 @@ app.get('/admin/movie', function(req,res){
 
 // admin update movie
 app.get('/admin/update/:id', function (req,res) {
-	var id = req.params.id
+	var id = req.params.id;
     if (id) {
         Movie.findById(id, function (err, movie) {
             /*if (err) {
@@ -140,9 +149,9 @@ app.get('/admin/update/:id', function (req,res) {
 
 // admin post movie 后台提交路由
 app.post('/admin/movie/new', function (req, res) {
-	var id = req.body.movie._id
-	var movieObj = req.body.movie
-	var _movie
+	var id = req.body.movie._id;
+	var movieObj = req.body.movie;
+	var _movie;
 	if (id !== 'undefined'&& id !==''){
 		Movie.findById(id, function (err, movie) {
 			if (err){
@@ -150,7 +159,7 @@ app.post('/admin/movie/new', function (req, res) {
                 // return
                 console.log(err)
 			}
-			_movie = _underscore.extend(movie, movieObj)
+			_movie = _underscore.extend(movie, movieObj);
 			_movie.save(function (err, movie) {
 				if (err){
                     // miss(res, err)
@@ -167,14 +176,14 @@ app.post('/admin/movie/new', function (req, res) {
             title: movieObj.title,
             country: movieObj.country,
             language: movieObj.language,
-            year: movieObj.year,
+            age: movieObj.age,
             poster: movieObj.poster,
             summary: movieObj.summary,
-            flash: movieObj.flash
-		})
+            url: movieObj.url
+		});
         _movie.save(function (err, movie) {
             if (err){
-                miss(res, err)
+                miss(res, err);
                 return
             }
             res.redirect('/movie/' + movie._id)
@@ -199,7 +208,7 @@ app.get('/admin/list',function(req,res){
 
 // list delete movie data 列表页删除电影
 app.delete('/admin/list', function (req, res) {
-    var id = req.query.id
+    var id = req.query.id;
     if (id) {
         Movie.remove({_id: id}, function (err, movie) {
             if (err) {

@@ -1,22 +1,21 @@
 extends ../layout
 
 block content
-  .container
-    .row
-      .col-md-7
-        //iframe(src=movie.flash, frameborder="0", allowFullScreen="true",quality="high", width="510", height="498")
-        video(src=movie.flash,width="720",align="middle",controls="controls")
-      .col-md-5
-        dl.dl-horizontal
-          dt 电影名称
-          dd= movie.title
-          dt 导演
-          dd= movie.director
-          dt 国家
-          dd= movie.country
-          dt 语言
-          dd= movie.language
-          dt 上映年份
-          dd= movie.year
-          dt 简介
-          dd= movie.summary
+    .container
+        .row
+            .col-md-7
+                video(src=movie.url, width="720", align="middle", controls="controls")
+            .col-md-5
+                dl.dl-horizontal
+                    dt 电影名称
+                    dd= movie.title
+                    dt 导演
+                    dd= movie.director
+                    dt 国家
+                    dd= movie.country
+                    dt 语种
+                    dd= movie.language
+                    dt 上映年份
+                    dd= movie.age
+                    dt 电影简介
+                    dd= movie.summary

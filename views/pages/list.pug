@@ -1,33 +1,33 @@
 extends ../layout
 
 block content
-  .container
-    .row
-      table.table.table-hover.table-bordered
-        thead
-          tr
-            th: p(align="center") 电影名字
-            th: p(align="center") 导演
-            th: p(align="center") 国家
-            th: p(align="center") 上映年份
-            th: p(align="center") 录入时间
-            th: p(align="center") 更新时间
-            th: p(align="center") 查看
-            th: p(align="center") 更新
-            th: p(align="center") 修改
-            th: p(align="center") 删除
-          tbody
-            each item in movies
-              tr(class="item-id-"+item._id)
-                td= item.title
-                td= item.director
-                td= item.country
-                td= item.language
-                td= item.year
-                td= moment(item.meta.createAt).format("YYYY-MM-DD HH:mm")
-                td= moment(item.meta.updateAt).format("YYYY-MM-DD HH:mm")
-                td: a(target="_blank",href="../movie/" + item._id) 查看
-                td: a(target="_blank",href="../admin/update/" + item._id) 修改
-                td
-                  button.btn.btn-danger.del(type="button", data-id= item._id, style="text-align:center; width:100%;height:100%;margin:0px;") 删除
-  script(src="/js/admin.js")
+    .container
+        .row
+            table.table.table-hover.table-bordered
+                thead
+                    tr
+                        th: p(align="center") 电影名字
+                        th: p(align="center") 导演
+                        th: p(align="center") 国家
+                        th: p(align="center") 语种
+                        th: p(align="center") 上映年份
+                        th: p(align="center") 录入时间
+                        th: p(align="center") 更新时间
+                        th: p(align="center") 查看
+                        th: p(align="center") 修改
+                        th: p(align="center") 删除
+                    tbody
+                        each item in movies
+                            tr(class="item-id-" + item._id)
+                                td(align="center")= item.title
+                                td(align="center")= item.director
+                                td(align="center")= item.country
+                                td(align="center")= item.language
+                                td(align="center")= item.age
+                                td(align="center")= moment(item.meta.createAt).format("YYYY-MM-DD HH:mm")
+                                td(align="center")= moment(item.meta.updateAt).format("YYYY-MM-DD HH:mm")
+                                td(align="center"): a(target="_blank", href="../movie/" + item._id) 查看
+                                td(align="center"): a(target="_blank", href="../admin/update/" + item._id) 修改
+                                td
+                                    button.btn.btn-danger.del(type="button", data-id=item._id, style="text-align:center;width:100%;height:100%;margin:0px;") 删除
+    script(src="/js/admin.js")
