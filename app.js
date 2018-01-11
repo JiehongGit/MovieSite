@@ -1,23 +1,33 @@
 // 加载express模块
-var express = require('express');
-// 创建一个express应用,express()是一个由express模块导出的入口(top-level)函数
+var express = require("express");
+
+// 创建一个express实例,express()是一个由express模块导出的入口(top-level)函数
 var app = express();
+
 // 引入path模块
-var path = require('path');
+var path = require("path");
+
 // 不引入不行,新版本中bodyParser不在express中而是单独存在的，引入前还需npm install body-parser，再require，再app.use()
-var bodyParser = require('body-parser');
-// 引入mongoose模块
-var mongoose = require('mongoose');
+//此中间件用于格式化表单提交的数据
+var bodyParser = require("body-parser");
+
+// 引入mongoose模块，用于连接数据库
+var mongoose = require("mongoose");
+
 // 引入相关的模块
-var Movie = require('./models/movie.js');
-var User = require('./models/user.js');
-// 引入underscore模块
-var _underscore = require('underscore');
+var Movie = require("./models/movie.js");
+var User = require("./models/user.js");
+
+// 引入underscore模块（字段替换模块）
+var _underscore = require("underscore");
+
 // 引入pug模块
-var pug = require('pug');
+var pug = require("pug");
+
 // 设置端口(也可以从命令行中设置全局变量)，process是一个全局变量，获取环境变量和外围传入的参数
 var port = process.env.PORT || 3000;
-// 引入时间模块
+
+// 引入时间模块，日期和时间格式化插件，在list页面中格式化日期
 var moment = require('moment');
 
 /*设置静态资源
@@ -30,12 +40,14 @@ mongod --dbpath D:\MongoDB\data
 
 // 由于mongoose中已不自带Promise，所以需要设置一个全局Promise
 mongoose.Promise = global.Promise;
+
 // 创建数据库连接
 mongoose.connect('mongodb://localhost:27017/moviesite',{useMongoClient: true});
 
 
 // 实例赋给一个变量,设置视图根目录
 app.set('views',path.join(__dirname,"./views/pages"));
+
 // 设置默认模板引擎
 app.set('view engine','pug');
 
@@ -46,12 +58,14 @@ app.set('view engine','pug');
 4、加extended:true，否则会在post的时候出错
 5、！！！解析 POST 方法中的表单数据*/
 app.use(bodyParser.json());
+// 格式化表单提交数据
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.use(express.bodyParser())
 // app.locals.moment = require('moment')
 
 // 设置静态目录，使view中引入的东西路径正确
+// 通过node内置的path模块，设置公共静态资源目录
 app.use(express.static(path.join(__dirname,'public')));
 // 使用 Moment.js
 app.locals.moment = require('moment');
@@ -92,9 +106,39 @@ app.get('/',function(req,res){
 // signup
 app.post('/user/signup', function (req,res) {
     var _user = req.body.user;
-    var user = new User(_user);
+    User.find({name: _user.name}, function (err, user) {
+        if (err){
+            console.log(err)
+        }
+        if (user){
+            return res.redirect('/')
+        }
+        else{
+            var user = new User(_user);
+            user.save(function (err, user) {
+                if (err){
+                    console.log(err)
+                }
+                //console.log(user)
+                res.redirect("/admin/userlist")
+            });
+        }
+    })
+    //console.log(_user)
+});
 
-    console.log(_user)
+// userlist page
+app.get('/admin/userlist', function (req, res) {
+    User.fetch(function (err, users) {
+        if (err) {
+            console.log(err)
+        }
+
+        res.render('userlist', {
+            title: '用户列表页',
+            users: users
+        })
+    })
 });
 
 // detail page
@@ -206,7 +250,7 @@ app.get('/admin/list',function(req,res){
     })
 });
 
-// list delete movie data 列表页删除电影
+// list delete movie data 列表页删除电影按钮
 app.delete('/admin/list', function (req, res) {
     var id = req.query.id;
     if (id) {

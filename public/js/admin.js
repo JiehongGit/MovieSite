@@ -3,10 +3,10 @@
 $(function(){
     $('.del').click(function(e){  // e 是被jquery改造后的event对象
         // 拿到当前点击按钮
-        var target = $(e.target)
-        var id = target.data('id')
+        var target = $(e.target);
+        var id = target.data('id');
         // 拿到表格的一行
-        var tr = $('.item-id-' + id)
+        var tr = $('.item-id-' + id);
 
         // 调用ajax
         $.ajax({
@@ -19,6 +19,7 @@ $(function(){
                     if(tr.length >0 ){
                         tr.remove()
                     }
+                    $.alert("删除成功")
                 }
             })
     })
