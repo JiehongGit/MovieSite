@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0d0cfa62-4838-4219-9bae-4bbde345ee49" name="默认的" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.bin/rc" afterPath="$PROJECT_DIR$/node_modules/.bin/rc" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.bin/rc.cmd" afterPath="$PROJECT_DIR$/node_modules/.bin/rc.cmd" />
-      <change beforePath="$PROJECT_DIR$/node_modules/bcrypt/package.json" afterPath="$PROJECT_DIR$/node_modules/bcrypt/package.json" />
-      <change beforePath="$PROJECT_DIR$/node_modules/rc/index.js" afterPath="$PROJECT_DIR$/node_modules/rc/index.js" />
-      <change beforePath="$PROJECT_DIR$/node_modules/rc/package.json" afterPath="$PROJECT_DIR$/node_modules/rc/package.json" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" afterPath="$PROJECT_DIR$/package-lock.json" />
-      <change beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change beforePath="$PROJECT_DIR$/public/js/admin.js" afterPath="$PROJECT_DIR$/public/js/admin.js" />
-      <change beforePath="$PROJECT_DIR$/schemas/user.js" afterPath="$PROJECT_DIR$/schemas/user.js" />
-    </list>
+    <list default="true" id="0d0cfa62-4838-4219-9bae-4bbde345ee49" name="默认的" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -26,16 +14,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="login.pug" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/pages/login.pug">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="5" column="21" lean-forward="true" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="register.pug" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/pages/register.pug">
           <provider selected="true" editor-type-id="text-editor">
@@ -111,8 +89,7 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="846" />
-    <option name="y" value="36" />
+    <option name="x" value="336" />
     <option name="width" value="1313" />
     <option name="height" value="917" />
   </component>
@@ -233,16 +210,15 @@
       <workItem from="1515378573039" duration="3958000" />
       <workItem from="1515459780487" duration="4545000" />
       <workItem from="1515483361109" duration="1083000" />
-      <workItem from="1515639096893" duration="2216000" />
+      <workItem from="1515639096893" duration="3844000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43462000" />
+    <option name="totallyTimeSpent" value="45090000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="846" y="36" width="1313" height="917" extended-state="0" />
-    <editor active="true" />
+    <frame x="336" y="0" width="1313" height="917" extended-state="0" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20123361" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
