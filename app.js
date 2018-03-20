@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const mongoStore = require('connect-mongo')(session);
 
-// mongoose 🔗
+// mongoose
 var dbUrl = 'mongodb://127.0.0.1:27017/test';
 mongoose.connect(dbUrl, { useMongoClient: true });
 mongoose.Promise = global.Promise;

@@ -5,13 +5,13 @@ block content
         table.table.table-hover.table-bordered
             thead
                 tr
-                    th 电影分类名称
+                    th 电影分类
                     th 加入时间
                     th 最近更新
                     th 修改
                     th 删除
             tbody
-                each item in categorys
+                each item in categories
                     tr(class="item-id-" + item._id)
                         td= item.name
                         td= moment(item.meta.createAt).format('YYYY-MM-DD H:mm:ss')
