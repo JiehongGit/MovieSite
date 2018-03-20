@@ -1,28 +1,33 @@
 {
-  "name": "moviesite",
-  "version": "1.0.0",
-  "description": "Movie",
-  "main": "app.js",
+  "name": "movie-website",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JiehongGit/MovieSite.git"
-  },
-  "author": "JiehongLin",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/JiehongGit/MovieSite/issues"
-  },
-  "homepage": "https://github.com/JiehongGit/MovieSite#readme",
   "dependencies": {
-    "bcrypt": "^1.0.3",
-    "body-parser": "^1.18.2",
-    "express": "^4.16.2",
-    "moment": "^2.20.0",
-    "mongoose": "^4.13.7",
-    "pug": "^2.0.0-rc.4",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "~1.17.1",
+    "bootstrap": "^3.3.7",
+    "connect-mongo": "^1.3.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "express-session": "^1.15.3",
+    "jquery": "^3.2.1",
+    "moment": "^2.18.1",
+    "mongoose": "^4.11.3",
+    "morgan": "^1.8.2",
+    "pug": "^2.0.0-rc.2",
+    "serve-favicon": "~2.4.2",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-sequence": "^0.4.6",
+    "open": "0.0.5"
   }
 }
