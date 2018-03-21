@@ -1,137 +1,181 @@
-/**
- * 处理电影控制逻辑
- */
+const Movie = require('../models/movies');
+const Comment = require('../models/comment');
+const Category = require('../models/category');
+const _underscore = require('underscore');
+// 读写文件模块
+const fs = require('fs');
+const path = require('path');
 
-const movieModel = require('../models/movieModel');
-const commentModel = require('../models/commentModel');
-const _ = require('underscore');
+// 详情页
+exports.detail = function(req, res){
+	let id = req.params.id;
 
-// GET detail page.
-exports.detail = function(req, res) {
-    // 取到 url '/detail/:id' 中的 id
-    var id = req.params.id;
+	Movie.update({_id: id}, {$inc: {pv:1}}, function(err){
+		if(err){
+			console.log(err);
+		}
+	});
+	Movie.findById(id, function(err, movie){ // 根据Movie查评论
+		Comment
+			.find({movie: id})
+			.populate('from', 'name') // 根据from去USer表查name
+			.populate('reply.from reply.to', 'name')
+			.exec(function(err, comments){
+				console.log(comments);
+				res.render('detail', {
+					title: '电影详情页', // 'Movie ' + movie.title + ' 详情',
+					movie: movie,
+					comments: comments
+				});		
+		});
 
-    movieModel.findById(id, function(err, movie) {
-        // 取到该电影的评论数据
-        commentModel.find({ movie: id }, function(err, comments) {
-            console.log(comments);
+	});
+};
+//后台录入页admin 
+exports.new = function(req, res){
+	Category.find({}, function(err, categories){
+		// console.log(categories);
+		res.render('admin', {
+			title: '电影类别录入页',
+			categories: categories,
+			movie: {}
+		});		
+	});
 
-            if (err) {
-                console.log(err);
-            }
-
-            res.render('detail', {
-                title: '电影详情页',
-                movie: movie,
-                comments: comments
-            });
-        });
-
-    });
 };
 
-// GET add_movie page.
-exports.add_movie = function(req, res) {
-    res.render('add_movie', {
-        title: '后台电影录入页',
-        movie: {
-            title: '',
-            director: '',
-            country: '',
-            year: '',
-            poster: '',
-            url: '',
-            summary: '',
-            language: ''
-        }
-    });
+// admin update movie
+exports.update = function(req, res){
+	var id = req.params.id;
+
+	if(id){
+		Category.find({}, function(err, categories){	
+			Movie.findById(id, function(err, movie){
+				res.render('admin', {
+					titel: '电影类别更新页',
+					movie: movie,
+					categories: categories
+				});
+			});
+		});
+	}
 };
 
-// add_movie page - post
-exports.movie_save = function(req, res) {
-    var id = req.body.movie._id;
-    var movieObj = req.body.movie;
-    var postMovie = null;
+// admin poster
+exports.savePoster = function(req, res, next){
+	let posterData = req.files.uploadPoster;
+	let filePath = posterData.path;
+	let originalFilename = posterData.originalFilename;
+	// console.log(req.files);中间件生成
+	if(originalFilename){
+		fs.readFile(filePath, function(err, data){
+			let timestamp = Date.now();
+			let type = posterData.type.split('/')[1];
+			let poster = timestamp+'.'+type;
+			let newPath = path.join(__dirname, '../../', '/public/upload/' + poster);
+			fs.writeFile(newPath, data, function(err){
+				req.poster = poster;
+				next();
+			});
 
-    // 若 id 存在则更新，不存在就创建
-    if (id) {
-        movieModel.findById(id, function(err, movie) {
-            if (err) {
-                console.log(err);
-            }
-            // postMovie = Object.assign({}, movie, movieObj);
-            // 用 underscore 替换对象
-            postMovie = _.extend(movie, movieObj);
-            postMovie.save(function(err, movie) {
-                if (err) {
-                    console.log(err);
-                }
-
-                // 重定向
-                res.redirect('/detail/' + movie._id);
-            });
-        });
-    } else {
-        postMovie = new movieModel({
-            title: movieObj.title,
-            director: movieObj.director,
-            country: movieObj.country,
-            language: movieObj.language,
-            year: movieObj.year,
-            poster: movieObj.poster,
-            url: movieObj.url,
-            summary: movieObj.summary
-        });
-
-        postMovie.save(function(err, movie) {
-            if (err) {
-                console.log(err);
-            }
-            // 重定向
-            res.redirect('/detail/' + movie._id);
-        });
-    }
+		});
+	}else{
+		next();
+	}
 };
 
-// GET movie-list page.
-exports.movie_list = function(req, res) {
-    movieModel.findAll(function(err, movies) {
-        if (err) {
-            console.log(err);
-        }
+// admin post movie
+exports.save = function(req, res){
+	// console.log('body:', req.body);
+	let id = req.body.movie._id;
+	// console.log('id: ', id);
+	let movieObj = req.body.movie;
+	var _movie;
 
-        res.render('movie_list', {
-            title: '后台电影管理页',
-            movies: movies
-        });
-    });
+	if(req.poster){
+		movieObj.poster = req.poster;
+	};
+
+	if(id) { // 根据报错排查问题'Cast to ObjectId failed for value "" at path "_id" for model "Movie"'
+		Movie.findById(id, function(err ,movie){
+			if(err){
+				console.log(err);
+			}
+
+			_movie = _underscore.extend(movie, movieObj);
+			_movie.save(function(err, movie){
+				if(err){
+					console.log(err);
+				}
+
+				res.redirect('/movie/' + movie._id);
+			});
+		});
+	}else{
+		_movie = new Movie(movieObj); // 不能给有_id的对象new，会报错castId，bug
+		// console.log(_movie);
+		// console.log(movieObj);
+		let categoryId = _movie.category;
+		let categoryName = movieObj.categoryName;
+
+		_movie.save(function(err, movie){
+			if(err){
+				console.log(err);
+			}
+
+			if(categoryId){
+				// 分类只能先查一个，多个不能用findById,会是数组
+				Category.findById(categoryId, function(err, category){
+					// console.log(category);
+					category.movies.push(movie._id);
+					category.save(function(err, category){
+						res.redirect('/movie/' + movie._id);
+					});
+				});	
+			}else if(categoryName){
+					let category = new Category({
+						name: categoryName,
+						movies: [movie._id]
+					});
+
+					category.save(function(err ,category){
+						movie.category = category._id;
+						movie.save(function(err, movie){
+							res.redirect('/movie/' + movie._id);
+						});
+					});
+			}
+			
+		});
+	}
 };
 
-// movie- page - update
-exports.movie_update = function(req, res) {
-    var id = req.params.id;
+//moive列表页list
+exports.list = function(req, res){
+	Movie.fetch(function(err ,movies){
+		if(err){
+			console.log(err);
+		}
+		res.render('list', {
+			title: '电影列表页',
+			movies: movies
+		});
 
-    if (id) {
-        movieModel.findById(id, function(req, movie) {
-            res.render('add_movie', {
-                title: '后台电影更新页',
-                movie: movie
-            });
-        });
-    }
+	});
 };
 
-// movie- page - delete
-exports.movie_delete = function(req, res) {
-    var id = req.query.id;
+// list delete movie
+exports.del = function(req, res){
+	var id = req.query.id;
 
-    if (id) {
-        movieModel.remove({ _id: id }, function(err, movie) {
-            if (err) {
-                console.log(err);
-            } else {
-                res.json({ success: 1 });
-            }
-        });
-    }
-};
+	if(id){
+		Movie.remove({_id: id}, function(err, movie){
+			if(err){
+				console.log(err);
+				res.json({success: 0});
+			}else{
+				res.json({success: 1});
+			}
+		});
+	}
+};	

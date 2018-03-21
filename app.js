@@ -1,80 +1,76 @@
+/*
+ * 伪造模板数据跑通前后端交互流程
+ */
+
 const express = require('express');
-const path = require('path');
-const favicon = require('serve-favicon');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const session = require('express-session')
-const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path');  // 设置路径
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+// 用户状态持久化三个模块
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const mongoStore = require('connect-mongo')(session);
 
-// mongoose
-var dbUrl = 'mongodb://127.0.0.1:27017/test';
-mongoose.connect(dbUrl, { useMongoClient: true });
-mongoose.Promise = global.Promise;
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Mongodb connect error !'));
-db.once('open', function() {
-    console.log('Mongodb started !');
-});
+const logger = require('morgan'); //日志模块 
+const serverStatic = require('serve-static');
 
-var app = express();
 
-// moment.js
-app.locals.moment = require('moment');
+const port = process.env.PORT || 3000; // 设置端口号，默认3000，process为全局变量，命令PORT=4000 node app.js传入 并启动
+const app = express(); //启动一个服务器
+const dbURL = 'mongodb://localhost/moviesite'; // 连接数据库
 
-// view engine setup
-app.set('views', path.join(__dirname, 'app/views/pages'));
-app.set('view engine', 'pug');
+mongoose.connect(dbURL);
 
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+// models loading
+let model_path = __dirname + '/app/models';
+let walk = function(path){
+	fs
+		.readdirSync(path)
+		.forEach(function(file){
+			let newPath = path + '/' + file;
+			let stat = fs.statSync(newPath);
+
+			if(stat.isFile()){
+				if(new RegExp('/(.*)\.(js|coffee)/').test(file)){
+					require(newPath);
+				}
+			} else if(stat.isDirectory()){
+				walk(newPath);
+			}
+		});
+};
+walk(model_path);
+
+app.set('views', './app/views/pages'); // 设置视图默认目录
+
+app.set('view engine', 'pug'); // 设置默认模板引擎pug, 模板文件后缀保持统一
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(session({
-    secret: 'imooc',
-    resave: false,
-    saveUninitialized: true,
-    store: new mongoStore({
-        url: dbUrl,
-        collection: 'sessions'
-    })
+app.use(bodyParser.urlencoded({extended: true}));//将表单数据 编码解析,_id 是mongodb的默认主键
+app.use(cookieParser()); // cookie中间件，现在需要单独安装cookie-parser,session使用
+//app.use(multi());
+app.use(session({ // 设置session
+	secret:'imooc',
+	store: new mongoStore({ // 持久化，重启session也在
+		url:dbURL,
+		collection: 'session'
+	})
 }));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'node_modules')));
 
-/**
- * 开发环境：
- * （显示报错信息、显示 HTTP 状态、美化 html 源代码、显示 mongoose debug 信息）
- */
-if (app.get('env') === 'development') {
-    app.set('showStackError', true);
-    // express.logger 在express 4.0后已经迁出，现在为 morgan
-    // app.use(express.logger(':method :url :status'));
-    app.use(logger(':method :url :status'));
-    app.locals.pretty = true;
-    mongoose.set('debug', true);
+// 判断是否是开发环境，是的话打印日志和增肌可读性
+if('development' === app.get('env')){ // process.env.NODE_ENV === 'development'
+	app.set('showStackError', true);
+	app.use(logger(':method :url :status'));
+	app.locals.pretty=true;
+	mongoose.set('debug', true);
 }
 
-// routes
 require('./config/routes')(app);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
+//body-parser不在和express打包在一起，要单独安装 app.use(express.bodyParser()); // 表单数据格式化
+app.use(serverStatic(path.join(__dirname, 'public'))); // 静态文件
+app.locals.moment = require('moment'); // locals的本地变量。模板可直接使用
+app.listen(port); //监听端口
 
-// error handler
-app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
+console.log('website started on port '+ port); // 监听成功打印信息
 
-    // render the error page
-    res.status(err.status || 500).render('error');
-});
-
-module.exports = app;

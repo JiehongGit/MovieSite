@@ -1,0 +1,81 @@
+.container
+	.navbar.navbar-default.navbar-fixed-top
+		.container
+			.navbar-header
+				btn.navbar-toggle.collapse(style="button", data-toggle="collapse", data-target=".navbar-collapse")
+				//a.navbar-brand(href="/") 首页
+			.navbar-header.li.dropdown
+				a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false") 后台
+					span.caret
+						ul.dropdown-menu
+							li.dropdown-header 分类管理
+							li
+								a(href="/admin/category/new") 电影分类录入
+							li
+								a(href="/admin/category/list") 电影分类录列表
+
+							li.dropdown-header 电影管理
+							li
+								a(href="/admin/movie/new") 电影信息录入
+							li
+								a(href="/admin/movie/list") 电影信息列表
+
+							li.dropdown-header 用户管理
+							li
+								a(href="") 用户信息录入
+							li
+								a(href="/admin/user/list") 用户信息列表
+
+							li.dropdown-header 更多
+							li
+								a(href="/") 返回首页
+
+			if user
+				p.navbar-text.navbar-right
+					span 欢迎您， #{user.name}
+					span &nbsp;|&nbsp;
+					a.navbar-link(href="/logout") 注销
+			else
+				p.navbar-text.navbar-right
+					a.navbar-link(href="#", data-toggle="modal", data-target="#signupModal") 注册
+					span &nbsp;|&nbsp;
+					a.navbar-link(href="#", data-toggle="modal", data-target="#signinModal") 登录
+	.row
+		.page-header.clearfix
+			h1 #{title}
+			.col-md-offset-4.col-md-8
+				form(method="GET", action='/results')
+					.input-group.col-sm-4.pull-right
+						input.form-control(type='text', name='q')
+						span.input-group-btn
+							button.btn.btn-default(type='submit') 搜索
+
+#signupModal.modal.fade
+	.modal-dialog
+		.modal-content
+			form(method="POST", action="/user/signup")
+				.modal-header 注册
+				.modal-body
+					form-group
+						label(for="signupName") 用户名
+						input#signupName.form-control(name="user[name]",type="text")
+						label(for="signupPassword") 密码
+						input#signupPassword.form-control(name="user[password]",type="text")
+				.modal-footer
+					button.btn.btn-default(type="button", data-dismiss="modal") 关闭
+					button.btn.btn-success(type="submit") 提交
+
+#signinModal.modal.fade
+	.modal-dialog
+		.modal-content
+			form(method="POST", action="/user/signin")
+				.modal-header 登录
+				.modal-body
+					form-group
+						label(for="signinName") 用户名
+						input#signinName.form-control(name="user[name]",type="text")
+						label(for="signinPassword") 密码
+						input#signinPassword.form-control(name="user[password]",type="text")
+				.modal-footer
+					button.btn.btn-default(type="button", data-dismiss="modal") 关闭
+					button.btn.btn-success(type="submit") 提交

@@ -1,14 +1,26 @@
-extends ../layout
+extend ../layout
 
 block content
-    .row
-        each item in movies
-            .col-md-3.col-sm-3
-                .thumbnail
-                    img(src=item.poster, alt=item.title)
-                    .caption
-                        h3.ellipsis-1.center= item.title
-                        p.ellipsis-2= item.summary
-                        p
-                            a.mr-10.btn.btn-primary(href="/detail/" + item._id, role="button") 观看
-                            //a.btn.btn-default(href="", role="button", disabled) 收藏
+	.container(style='margin-bottom: 60px;')
+		.row
+			each cat in categories
+				.panel.panel-primary
+					.panel-heading
+						h3= cat.name
+						h3
+							a(href='/results?cat='+cat.id+'&p=0') 更多
+					.panel-body
+						if cat.movies && cat.movies.length>0
+							each item in cat.movies
+								.col-md-2
+									.thumbnail
+										a(href="/movie/"+item._id)
+											if item.poster.indexOf('http:')
+												img(src=item.poster, alt=item.title)
+											else
+												img(src="/upload/"+item.poster, alt=item.title)
+												
+										.caption
+											h3 #{item.title}
+											p: a.btn.btn-primary(href="/movie/"+ item._id, role="button") 观看
+											//- 要紧挨并且有空格，要不报错
