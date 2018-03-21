@@ -78,7 +78,7 @@ exports.logout = function(req,res){
 	res.redirect('/');
 };
 // userlist page
-exports.list = function(req,res){
+exports.userlist = function(req,res){
 	User.fetch(function(err ,users){
 		if(err){
 			console.log(err);
@@ -89,6 +89,18 @@ exports.list = function(req,res){
 		});
 
 	});
+};
+
+//
+exports.adduser = function(req, res) {
+    res.render('add_user', {
+        title: '用户录入页',
+        user: {
+            name: '',
+            password: '',
+            role: 10
+        }
+    });
 };
 
 // middware for user

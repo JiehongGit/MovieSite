@@ -26,8 +26,8 @@ module.exports = function(app){
 	app.get('/signin', User.showSignin);
 	app.get('/signup', User.showSignup);
 	app.get('/logout',User.logout);
-	app.get('/admin/user/list', User.signinRequired, User.adminRequired, User.list); // 中间件概念
-
+	app.get('/admin/user/list', User.signinRequired, User.adminRequired, User.userlist); // 中间件概念
+    app.get('/admin/user/new', User.signinRequired, User.adminRequired, User.adduser);
     //app.get('/admin/user_update/:id', User.signinRequired(),User.adminRequired(), User.user_update);
     //app.post('/admin/save_user', User.signinRequired(), User.adminRequired(),User.save_user());
 
