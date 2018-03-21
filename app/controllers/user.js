@@ -200,3 +200,18 @@ exports.user_delete = function(req, res) {
         });
     }
 };*/
+
+// 删除用户
+exports.user_delete = function(req, res) {
+    let id = req.query.id;
+
+    if (id) {
+        User.remove({ _id: id }, function(err, user) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({ success: 1 });
+            }
+        });
+    }
+};

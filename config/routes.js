@@ -30,6 +30,7 @@ module.exports = function(app){
     app.get('/admin/user/new', User.signinRequired, User.adminRequired, User.adduser);
     //app.get('/admin/user_update/:id', User.signinRequired(),User.adminRequired(), User.user_update);
     //app.post('/admin/save_user', User.signinRequired(), User.adminRequired(),User.save_user());
+    app.delete('/admin/user/list', User.signinRequired, User.adminRequired, User.user_delete);
 
 	// Movie
 	app.get('/movie/:id', Movie.detail);

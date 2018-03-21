@@ -11,7 +11,7 @@ $(function() {
 
         $.ajax({
                 type: 'DELETE',
-                url: '/admin/userlist?id=' + id
+                url: '/admin/user/list?id=' + id
             })
             // 删除后希望服务器返回状态
             .done(function(results) {
