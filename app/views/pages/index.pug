@@ -16,11 +16,11 @@ block content
 									.thumbnail
 										a(href="/movie/"+item._id)
 											if item.poster.indexOf('http:')
-												img(src=item.poster, alt=item.title)
+												img(src=item.poster, alt=item.title, style="wiidth: 180px; height:236px")
 											else
-												img(src="/upload/"+item.poster, alt=item.title)
-												
+												img(src="/upload/"+item.poster, alt=item.title, style="wiidth: 180px; height:236px")
+												//(style="text-align:center;")
 										.caption
-											h3 #{item.title}
-											p: a.btn.btn-primary(href="/movie/"+ item._id, role="button") 观看
+											h3(style="text-align:center;")= item.title
+											p(style="text-align:center; margin-top: 40px;"): a.btn.btn-primary(href="/movie/"+ item._id, role="button") 详情
 											//- 要紧挨并且有空格，要不报错

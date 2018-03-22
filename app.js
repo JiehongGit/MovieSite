@@ -50,7 +50,7 @@ app.use(bodyParser.urlencoded({extended: true}));//将表单数据 编码解析,
 app.use(cookieParser()); // cookie中间件，现在需要单独安装cookie-parser,session使用
 //app.use(multi());
 app.use(session({ // 设置session
-	secret:'imooc',
+	secret:'moviesite',
 	store: new mongoStore({ // 持久化，重启session也在
 		url:dbURL,
 		collection: 'session'

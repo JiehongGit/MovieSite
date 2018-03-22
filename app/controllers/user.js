@@ -55,7 +55,7 @@ exports.signin = function(req,res){
 			return res.redirect('/signup');
 		}
 		// compare password
-		user.comparePassword(password, (err, isMatched)=>{
+		user.comparePassword(password, function(err, isMatched){
 			if(err){
 				console.log(err);
 			}
@@ -200,6 +200,19 @@ exports.user_delete = function(req, res) {
         });
     }
 };*/
+// 修改用户
+exports.user_update = function(req, res) {
+    let id = req.params.id;
+
+    if (id) {
+        User.findById(id, function(req, user) {
+            res.render('add_user', {
+                title: '后台用户修改页',
+                user: user
+            });
+        });
+    }
+};
 
 // 删除用户
 exports.user_delete = function(req, res) {

@@ -12,10 +12,10 @@ block content
 							.col-md-2
 								.thumbnail
 									a(href="/movie/"+item._id)
-										img(src=item.poster, alt=item.title)
+										img(src=item.poster, alt=item.title, style="wiidth: 180px; height:236px")
 									.caption
-										h3 #{item.title}
-										p: a.btn.btn-primary(href="/movie/"+ item._id, role="button") 观看
+										h3(style="text-align:center;")= item.title
+										p(style="text-align:center; margin-top: 40px;"): a.btn.btn-primary(href="/movie/"+ item._id, role="button") 详情
 										//- 要紧挨并且有空格，要不报错
 			ul.pagination
 				- for ( let i = 0; i<totalPage; i++){

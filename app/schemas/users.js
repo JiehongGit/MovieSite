@@ -25,6 +25,7 @@ const UserSchema = new mongoose.Schema({
 		}
 	}
 });
+// 使用pre中间件在用户信息存储前进行密码加密
 // 模式方法，每次调用判断是否是新加的
 UserSchema.pre('save', function(next){ // 箭头函数this指向有问题，空对象
 	let user = this;

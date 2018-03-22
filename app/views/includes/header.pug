@@ -1,48 +1,54 @@
 .container
-	.navbar.navbar-default.navbar-fixed-top
+	.navbar.navbar-default.navbar-fixed-top(style="background-color:#3A5FCD;")
 		.container
 			.navbar-header
 				btn.navbar-toggle.collapse(style="button", data-toggle="collapse", data-target=".navbar-collapse")
 				//a.navbar-brand(href="/") 首页
-			.navbar-header.li.dropdown
-				a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false") 后台
-					span.caret
-						ul.dropdown-menu
-							li.dropdown-header 分类管理
-							li
-								a(href="/admin/category/new") 电影分类录入
-							li
-								a(href="/admin/category/list") 电影分类录列表
-
-							li.dropdown-header 电影管理
-							li
-								a(href="/admin/movie/new") 电影信息录入
-							li
-								a(href="/admin/movie/list") 电影信息列表
-
-							li.dropdown-header 用户管理
-							li
-								a(href="/admin/user/new") 用户信息录入
-							li
-								a(href="/admin/user/list") 用户信息列表
-
-							li.dropdown-header 更多
-							li
-								a(href="/") 返回首页
+			//.navbar-header.li.dropdown
+				//a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false") 后台
 
 			if user
 				p.navbar-text.navbar-right
-					span 欢迎您， #{user.name}
-					span &nbsp;|&nbsp;
-					a.navbar-link(href="/logout") 注销
+					span(style="color:#F5FFFA") 欢迎您，
+					span(style="color:#FFFF00; font-weight:bold")= user.name
+					span(style="color:#0A0A0A") &nbsp;|&nbsp;
+					a.navbar-link(href="/logout",style="color:#FF4500;font-weight:bold") 注销
+				if user.role>10
+					span.dropdown.right(style="display: inline-block; margin-top: 8px; ")
+						button.btn.btn-primary.dropdown-toggle(id="dLable",type="button",data-toggle="dropdown",aria-haspopup="true",aria-expanded="false") 后台管理
+							span.caret
+						ul(class="dropdown-menu",aria-labelledby="dLable")
+							li.dropdown-header(style="font-size:17px;color:#080808;font-weight:bold") 分类管理
+								li
+									a(href="/admin/category/new",style="color:#4D4D4D") 电影分类录入
+								li
+									a(href="/admin/category/list",style="color:#4D4D4D") 电影分类列表
+
+							li.dropdown-header(style="font-size:17px;color:#080808;font-weight:bold") 电影管理
+								li
+									a(href="/admin/movie/new",style="color:#4D4D4D") 电影信息录入
+								li
+									a(href="/admin/movie/list",style="color:#4D4D4D") 电影信息列表
+
+							li.dropdown-header(style="font-size:17px;color:#080808;font-weight:bold") 用户管理
+								//li
+									a(href="/admin/user/new") 用户信息录入
+								li
+									a(href="/admin/user/list",style="color:#4D4D4D") 用户信息列表
+
+							li.dropdown-header(style="font-size:17px;color:#080808;font-weight:bold") 更多
+								li
+									a(href="/",style="color:#4D4D4D") 返回首页
+				else
+					a(href="/",style="display: inline-block; margin-top: 15px; color: #CAE1FF") 返回首页
 			else
 				p.navbar-text.navbar-right
-					a.navbar-link(href="#", data-toggle="modal", data-target="#signupModal") 注册
-					span &nbsp;|&nbsp;
-					a.navbar-link(href="#", data-toggle="modal", data-target="#signinModal") 登录
+					a.navbar-link(href="#", data-toggle="modal", data-target="#signupModal", style="color:#F5FFFA;font-weight:bold") 注册
+					span(style="color:#0A0A0A") &nbsp;|&nbsp;
+					a.navbar-link(href="#", data-toggle="modal", data-target="#signinModal", style="color:#F5FFFA;font-weight:bold") 登录
 	.row
 		.page-header.clearfix
-			h1 #{title}
+			h1(style="color:#080808") 首页
 			.col-md-offset-4.col-md-8
 				form(method="GET", action='/results')
 					.input-group.col-sm-4.pull-right

@@ -17,6 +17,27 @@ $(function(){
 			}
 		});
 	});
+
+	//电影分类删除
+    $('.del').click(function(e){
+        var target = $(e.target);
+        var id = target.data('id');// 获取元点击素
+        var tr = $('.item-id-'+id);
+
+        $.ajax({
+            type: 'DELETE',
+            url: '/admin/category/list?id='+id // 异步请求类型：删除
+        })
+            .done((results) => {
+                if(results.success ===1) {
+                    if(tr.length>0){
+                        tr.remove();
+                    }
+                }
+            });
+    });
+
+
 	$('#douban').blur(function(){
 		let douban = $(this);
 		let id = douban.val();

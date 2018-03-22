@@ -1,12 +1,12 @@
 //const Movie = require('../models/movies');
 const Category = require('../models/category');
 //const Comment = require('../models/comment');
-//const _underscore = require('underscore');
+const _underscore = require('underscore');
 
 //后台录入页admin 
 exports.new = function(req, res){
 	res.render('category_admin', {
-		title: 'immoc 后台分类录入页',
+		title: '分类录入页',
 		category: {
 			name: ''
 		}
@@ -42,6 +42,21 @@ exports.list = function(req, res){
 
 	});
 };
+
+
+/*exports.update = function(req, res){
+    var id = req.params.id;
+
+    if(id){
+        Category.findById(id, function(err, category){
+                res.render('category', {
+                    titel: '电影分类更新页',
+                    category: category
+                });
+            });
+
+    }
+};*/
 
 //cate list delete
 exports.del = function(req, res){

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
-let ObjectId = Schema.Types.ObjectId; // 不是很懂,主键 ObjectId
+let ObjectId = Schema.Types.ObjectId;
 
 const CategorySchema = new Schema({
 	name: String,

@@ -9,9 +9,9 @@ let multipartMiddleware = multipart();
 module.exports = function(app){
 	// pre handle user
 	app.use(function(req, res,next){
-		let _user = req.session.user; // 从session读取y用户
-
-		app.locals.user = _user;
+		//let _user = req.session.user; // 从session读取y用户
+        res.locals.user = req.session.user;
+		//app.locals.user = _user;
 		next();	
 	});
 
@@ -28,7 +28,7 @@ module.exports = function(app){
 	app.get('/logout',User.logout);
 	app.get('/admin/user/list', User.signinRequired, User.adminRequired, User.userlist); // 中间件概念
     app.get('/admin/user/new', User.signinRequired, User.adminRequired, User.adduser);
-    //app.get('/admin/user_update/:id', User.signinRequired(),User.adminRequired(), User.user_update);
+    //app.get('/admin/user/update/:_id', User.signinRequired(),User.adminRequired(), User.user_update);
     //app.post('/admin/save_user', User.signinRequired(), User.adminRequired(),User.save_user());
     app.delete('/admin/user/list', User.signinRequired, User.adminRequired, User.user_delete);
 
@@ -45,7 +45,9 @@ module.exports = function(app){
 	// Category
 	app.get('/admin/category/new', User.signinRequired, User.adminRequired, Category.new);
 	app.post('/admin/category',User.signinRequired, User.adminRequired, Category.save);
-	app.get('/admin/category/list',User.signinRequired, User.adminRequired, Category.list);	
+	app.get('/admin/category/list',User.signinRequired, User.adminRequired, Category.list);
+    app.delete('/admin/category/list',User.signinRequired, User.adminRequired, Category.del);
+    //app.get('/admin/category/update/:id', User.signinRequired, User.adminRequired, Category.update)
 
 	// Results
 	app.get('/results', Index.search);	
