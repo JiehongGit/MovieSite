@@ -23,7 +23,7 @@ exports.detail = function(req, res){
 			.exec(function(err, comments){
 				console.log(comments);
 				res.render('detail', {
-					title: '电影详情页', // 'Movie ' + movie.title + ' 详情',
+					title: '电影: ' + movie.title + ' 详情页',
 					movie: movie,
 					comments: comments
 				});		
@@ -36,7 +36,7 @@ exports.new = function(req, res){
 	Category.find({}, function(err, categories){
 		// console.log(categories);
 		res.render('admin', {
-			title: '电影类别录入页',
+			title: '电影信息--后台录入页',
 			categories: categories,
 			movie: {}
 		});		
@@ -52,7 +52,7 @@ exports.update = function(req, res){
 		Category.find({}, function(err, categories){	
 			Movie.findById(id, function(err, movie){
 				res.render('admin', {
-					titel: '电影类别更新页',
+					title: '电影信息--后台更新页',
 					movie: movie,
 					categories: categories
 				});
@@ -157,7 +157,7 @@ exports.list = function(req, res){
 			console.log(err);
 		}
 		res.render('list', {
-			title: '电影列表页',
+			title: '电影信息--后台列表页',
 			movies: movies
 		});
 

@@ -84,7 +84,7 @@ exports.userlist = function(req,res){
 			console.log(err);
 		}
 		res.render('userlist', {
-			title: '用户列表页',
+			title: '用户信息--后台列表页',
 			users: users
 		});
 
@@ -94,7 +94,7 @@ exports.userlist = function(req,res){
 //
 exports.adduser = function(req, res) {
     res.render('add_user', {
-        title: '用户录入页',
+        title: '用户信息--后台录入页',
         user: {
             name: '',
             password: '',
@@ -207,7 +207,7 @@ exports.user_update = function(req, res) {
     if (id) {
         User.findById(id, function(req, user) {
             res.render('add_user', {
-                title: '后台用户修改页',
+                title: '用户信息--后台修改页',
                 user: user
             });
         });
