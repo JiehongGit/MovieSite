@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const CommentSchema = require('../schemas/Comment');
-const Comment = mongoose.model('Comment', CommentSchema);
+var mongoose = require('mongoose')
+var CommentSchema = require('../schemas/comment')
+var Comment = mongoose.model('Comment',CommentSchema)
 
-module.exports=Comment;
+module.exports  = Comment 

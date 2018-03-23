@@ -6,19 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JiehongGit/MovieSite.git"
-  },
   "author": "Jiehong",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/JiehongGit/MovieSite/issues"
-  },
-  "homepage": "https://github.com/JiehongGit/MovieSite#readme",
   "dependencies": {
-    "bcrypt": "^1.0.3",
-    "body-parser": "^1.18.2",
+    "art-template": "^4.12.2",
+    "bcrypt-nodejs": "0.0.3",
     "connect-mongo": "^2.0.1",
     "connect-multiparty": "^2.1.0",
     "cookie-parser": "^1.4.3",
@@ -27,8 +19,7 @@
     "moment": "^2.21.0",
     "mongoose": "^5.0.11",
     "morgan": "^1.9.0",
-    "pug": "^2.0.2",
-    "pug-cli": "^1.0.0-alpha6",
+    "serve-favicon": "^2.4.5",
     "underscore": "^1.8.3"
   }
 }

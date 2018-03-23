@@ -1,79 +1,86 @@
-const Movie = require('../models/movies');
-const Category = require('../models/category');
+var Movie = require('../models/movie');
+var Category = require('../models/category');
+var Comment = require('../models/comment');
+var Keyword = require('../models/keyword');
 
-// index page
-exports.index = function(req, res){
-	// console.log('user in session');
-	// console.log(req.session.user);
+exports.index = function(req, res) {
 
-	Category
-		.find({})
-		.populate({path: 'movies', options: {limit: 6}})
-		.exec(function(err, categories){
+	Category.find({}).populate({path:'movies'}).exec(function(err,categorys){
+			if(err)  console.log(err);
+			Movie.find({}).sort({pv: -1}).limit(10).exec(function(err,movies){
+
+				res.render('index',{
+					title: '爱生活，爱电影',
+					category: categorys,
+					ranks: movies
+				});
+			})
+	})
+}
+
+exports.search = function(req,res){
+	var catId = req.query.cat;
+	var search_text = req.query.search_text;
+	var page = parseInt(req.query.p) || 0;
+	var count = 10; //每页展示电影数量
+	var start = page * count;
+	
+	if(catId){
+		Category.find({_id:catId}).populate({path:'movies'}).exec(function(err,categorys){
 			if(err){
 				console.log(err);
 			}
-			res.render('index', { // 返回首页
-				title: '首页' ,// 传递参数，替代占位符
-				categories: categories
+			var category = categorys[0] || {};
+			var movies = category.movies || [];
+			var totalPage = Math.ceil(movies.length / count);
+			var results = movies.slice(start,start + count);
+			
+			res.render('search',{
+				title: '查询结果',
+				keyword: category.name,
+				currentPage: page + 1,
+				totalPage: totalPage, 
+				movies: results
 			});
-		});
-};
-
-// search page
-exports.search = function(req, res){
-	let catId = req.query.cat;
-	let q = req.query.q;
-	let page = parseInt(req.query.p, 10) || 0; // 没传默认0
-	let count = 6
-	let index = page * count;
-
-	if(catId){
-		Category
-			.find({_id: catId})
-			.populate({
-				path: 'movies',
-				select: 'title poster'
-				// options: {limit: 2, skip: index}
+		})
+	} else {
+		//如果搜索词不为空，保存搜索关键词
+		if(search_text != ''){
+			Keyword.findOne({keyword:search_text},function(err,keyword){
+				if(err)	console.log(err);
+				if(!keyword){
+					var _keyword = new Keyword({
+						keyword:  search_text,
+						count: 1
+					});	
+					_keyword.save(function(err,keyword){
+						if(err)	console.log(err);
+					})
+				} else {
+					Keyword.update({_id:keyword._id},{$inc:{count:1}},function(err){
+						if(err)	console.log(err);
+					})
+				}
 			})
-			.exec(function(err, categories){
-				if(err){
-					console.log(err);
-				}
-				let category = categories[0] || {};
-				let movies =category.movies || [];
-				let results = movies.slice(index, index + count)
-				// console.log(movies)
-				res.render('results', { // 返回首页
-					title: '结果列表页面',// 传递参数，替代占位符
-					keyword: category.name,
+		}
+		Movie.find({title: new RegExp(search_text+".*",'i')}).exec(function(err,movies){
+			if(err){
+				console.log(err);
+			}
+	
+			var totalPage = Math.ceil(movies.length / count);
+			var results = movies.slice(start,start + count);
+			
+			Keyword.find({}).sort({count: -1}).limit(10).exec(function(err,keywords){
+				res.render('search',{
+					title: '查询结果',
+					keyword: search_text,
+					currentPage: page + 1,
+					totalPage: totalPage, 
 					movies: results,
-					currentPage: (page + 1),
-					//Math.ceil向上取整
-					totalPage: Math.ceil(movies.length / count),
-					query: 'cat=' + catId
+					keywords: keywords
 				});
-			});
-	}else{
-		Movie
-			.find({title: new RegExp((q + '.*'),'i')})
-			.exec(function(err, movies){
-				if(err){
-					console.log(err);
-				}
-
-				let results = movies.slice(index, index + count);
-
-				// console.log(movies)
-				res.render('results', { // 返回首页
-					title: '结果列表页面',// 传递参数，替代占位符
-					keyword: q,
-					movies: results,
-					currentPage: (page + 1),
-					totalPage: Math.ceil(movies.length / count),
-					query: 'q='+q
-				});
-			});
+			})
+		})
 	}
-};
-
+}

@@ -1,50 +1,57 @@
-const mongoose = require('mongoose');
-let Schema = mongoose.Schema;
-let ObjectId = Schema.Types.ObjectId;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var ObjectId = Schema.Types.ObjectId;
+var oDate = require("../../libs/date");
 
-// ObjectId数据库主键
-const CommentSchema = new Schema({
-	movie: {type: ObjectId, ref: 'Movie'},
-	from: {type: ObjectId, ref: 'User'},
-	reply: [{ // 此条评论楼层内叠加的评论
-		from: {type: ObjectId, ref: 'User'},
-		to: {type: ObjectId, ref: 'User'},
-		content: String //具体回复内容
+var CommentSchema = new mongoose.Schema({
+	movie:{
+		type: ObjectId,
+		ref: 'Movie'
+	},
+	from:{
+		type: ObjectId,
+		ref: 'User'
+	},
+	reply: [{
+		from:{type: ObjectId,ref: 'User'},
+		to:{type: ObjectId,ref: 'User'},
+		content: String,
+		createtime: {type: String,default: oDate.Format("yyyy-MM-dd HH:mm:ss")},
 	}],
 	content: String,
-	meta: {// 更新记录的状态记录
-		createAt: {
-			type: Date,
+	createtime: {
+		type: String,
+		default: oDate.Format("yyyy-MM-dd HH:mm:ss")
+	},
+	meta:{
+		createAt:{
+			type:Date,
 			default: Date.now()
 		},
-		updateAt: {
-			type: Date,
+		updateAt:{
+			type:Date,
 			default: Date.now()
 		}
 	}
-});
-// 模式方法，每次调用判断是否是新加的
-CommentSchema.pre('save', function(next){
+})
+
+CommentSchema.pre('save',function(next){
 	if(this.isNew){
 		this.meta.createAt = this.meta.updateAt = Date.now();
-	}else{
-		this.updateAt = Date.now();
+	} else {
+		this.meta.updateAt = Date.now();
 	}
-	next();// 存储流程走下去
-});
-// 静态方法
+	next();
+})
 CommentSchema.statics = {
-	fetch(cb){ // 取出数据库所有数据
-		return this
-			.find({})
-			.sort('meta.updateAt')  // 排序
-			.exec(cb)
+	fetch: function(cb){
+		return this.find({}).sort('meta.updateAt').exec(cb);
 	},
-	findById(id, cb){ // 查询单条数据
-		return this
-			.findOne({_id: id})
-			.exec(cb)
-	}
-};
-
+	findById: function(id,cb){
+		return this.findOne({_id: id}).exec(cb);
+	},
+	delete: function(id,cb){
+		return this.remove({_id: id}).exec(cb);
+	},
+}
 module.exports = CommentSchema;

@@ -1,40 +1,36 @@
-const Comment = require('../models/comment');
-//const _underscore = require('underscore');
+var Comment = require('../models/comment');
+var Movie = require('../models/movie');
 
-// comment
-exports.save = function(req, res){
-	let _comment = req.body.comment;
-	let movieId = _comment.movie;
+exports.reply = function(req,res){
+	var _comment = req.body.comment;
+	var movieId = _comment.movie;
 	
 	if(_comment.cid){
 		Comment.findById(_comment.cid,function(err,comment){
-			let reply = {
+			if(err) console.log(err);
+			var reply = {
 				from: _comment.from,
 				to: _comment.tid,
 				content: _comment.content
-			};
-
-			comment.reply.push(reply);
-			comment.save(function(err, comment){
-				if(err){
-					console.log(err);
-				}
-
-				res.redirect('/movie/' + movieId);			
-			});
-		});
-	}
-	else{
-		let comment = new Comment(_comment);
-
-		comment.save(function(err, newComment){
-			if(err){
-				console.log(err);
 			}
+			comment.reply.push(reply);
 
-			res.redirect('/movie/' + movieId);
-		});		
-	}
-
-};
-
+			comment.save(function(err,comment){
+				if(err) console.log(err);
+				Movie.update({_id:movieId},{$inc:{comments:1}},function(err){
+					if(err)	console.log(err);
+				})
+				res.redirect('/movie/'+ movieId);
+			})
+		})
+	} else {
+		var comment = new Comment(_comment);
+		comment.save(function(err,comment){
+			if(err) console.log(err);
+			Movie.update({_id:movieId},{$inc:{comments:1}},function(err){
+				if(err)	console.log(err);
+			})
+			res.redirect('/movie/'+ movieId);
+		})
+	}	
+}

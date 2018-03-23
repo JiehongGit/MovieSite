@@ -1,30 +1,17 @@
-// 处理回复评论数据的逻辑
-$(function(){
-	$('.comment').click(function(e){
-		var target = $(e.currentTarget);// 获取元点击素
-		var toId = target.data('tid');
-		var commentId = target.data('cid');
-
-		// 是否已经点击过了
-		if($('#toId').length>0){
-			$('#toId').val(toId);
-		}else{
-			$('<input>').attr({
-				type: 'hidden',
-				id: 'toId',
-				name: 'comment[tid]',
-				value: toId
-			}).appendTo('#commentForm');
-		}	
-		if($('#commentId').length>0){
-			$('#commentId').val(commentId);
-		}else{
-			$('<input>').attr({
-				type: 'hidden',
-				id: 'commentId',
-				name: 'comment[cid]',
-				value: commentId
-			}).appendTo('#commentForm');
-		}		
-	});
-});
+var isInsert = false;
+$("[toUser]").click(function(){
+	var user = $(this).attr("toUser");
+	var userId = $(this).attr("userId");
+	var commentId = $(this).data('cid');
+	if(!isInsert){
+		var input_1 = $("<input type='hidden' name='comment[tid]' value="+userId+">");
+		var input_2 = $("<input type='hidden' name='comment[cid]' value="+commentId+">");
+		$("#replay-form").append(input_1).append(input_2);
+		isInsert = true;
+	} else {
+		$("[name='comment[tid]']").val(userId);
+		$("[name='comment[cid]']").val(commentId);
+	}
+	$("[reply-user]").html(user);
+	$("[reply-user]").parent().show();
+})
