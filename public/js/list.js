@@ -14,7 +14,7 @@ $('.table-list').dataTable({
         "sInfoEmpty": "没有数据",
         "sInfoFiltered": "(从 _MAX_ 条数据中过滤)",
         "sZeroRecords": "没有找到匹配的数据",
-         "sSearch": "搜索:",
+        "sSearch": "搜索:",
         "oPaginate": {
         "sFirst": "首页",
         "sPrevious": "上一页",
@@ -25,13 +25,23 @@ $('.table-list').dataTable({
 });
 
 function delete_movie(obj,id){
-	var data = {id : id};
-	layer.confirm('确认要删除吗？',function(index){
-		$.get("/admin/movie/delete",data,function(data){
-			$(obj).parents("tr").remove();
-			layer.msg('已删除!',{icon:1,time:2000});
-		})
-	});
+    var data = {id : id};
+    layer.confirm('确认要删除吗？',function(index){
+        $.get("/admin/movie/delete",data,function(data){
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!',{icon:1,time:2000});
+        })
+    });
+}
+
+function delete_user(obj,id){
+    var data = {id : id};
+    layer.confirm('确认要删除吗？',function(index){
+        $.get("/admin/user/delete",data,function(data){
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!',{icon:1,time:2000});
+        })
+    });
 }
 function delete_cat(obj,id){
 	var data = {id : id};

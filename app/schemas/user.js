@@ -27,7 +27,6 @@ var UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save',function(next){
 	var user = this
-
 	if(this.isNew){
 		this.meta.createAt = this.meta.updateAt = Date.now();
 	} else {
@@ -45,6 +44,8 @@ UserSchema.pre('save',function(next){
 	});
 //	next();
 })
+
+// 静态方法
 UserSchema.statics = {
 	fetch: function(cb){
 		return this.find({}).sort('meta.updateAt').exec(cb);
@@ -52,8 +53,12 @@ UserSchema.statics = {
 	findByName: function(name,cb){
 		return this.findOne({name: name}).exec(cb);
 	},
+	delete: function(id,cb){
+		return this.remove({_id: id}).exec(cb);
+	},
 }
 
+// 实例方法
 UserSchema.methods = {
 	comparePassword: function(password,cb){
 		bcrypt.compare(password,this.password,function(err,isMatch){

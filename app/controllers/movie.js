@@ -24,7 +24,7 @@ exports.movie= function(req, res) {
 		})
 	})
 	
-}
+};
 
 exports.detail = function(req, res) {
 	var id = req.params.id;
@@ -52,7 +52,7 @@ exports.detail = function(req, res) {
 			})
 		});
 	});
-}
+};
 
 exports.update = function(req, res) {
 	var id = req.params.id;
@@ -74,7 +74,7 @@ exports.update = function(req, res) {
 			});
 		});
 	}
-}
+};
 
 exports.add = function(req,res){
 	var id = req.body.movie._id;
@@ -121,7 +121,7 @@ exports.add = function(req,res){
 			})
 		});
 	}
-}
+};
 
 exports.list = function(req, res) {
 	Movie.fetch(function(err,movies){
@@ -133,7 +133,7 @@ exports.list = function(req, res) {
 			movies: movies
 		});
 	})
-}
+};
 
 exports.delete = function(req, res) {
 	var id = req.query.id;
@@ -149,7 +149,7 @@ exports.delete = function(req, res) {
 			
 		})
 	}
-}
+};
 
 exports.fileUpload = function(req,res){
 	var postData = req.files.file;

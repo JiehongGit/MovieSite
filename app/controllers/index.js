@@ -10,7 +10,7 @@ exports.index = function(req, res) {
 			Movie.find({}).sort({pv: -1}).limit(10).exec(function(err,movies){
 
 				res.render('index',{
-					title: '爱生活，爱电影',
+					title: '电影交流平台',
 					category: categorys,
 					ranks: movies
 				});

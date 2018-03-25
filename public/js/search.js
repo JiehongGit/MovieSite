@@ -40,19 +40,19 @@ var pager = Vue.component('pager',{
         pages:function(){
             var pagesArr = [];
             if(this.total <= 5){
-                for(let i = 1; i <= this.total; i++){
+                for(var i = 1; i <= this.total; i++){
                     pagesArr.push(i)
                 }
             }else{
                 if(this.current <= 3){
-                    for(let i = 1; i < 5; i++){
+                    for(var i = 1; i < 5; i++){
                         pagesArr = [1,2,3,4,5]
                     }
                 }else{
                     if(this.total - this.current > 2){
                         pagesArr = [this.current-2,this.current-1,this.current,this.current+1,this.current+2]
                     }else{
-                        for(let i = this.total-4;i<=this.total;i++){
+                        for(var i = this.total-4;i<=this.total;i++){
                             pagesArr.push(i)
                         }
                     }

@@ -1,10 +1,11 @@
+var _ = require('underscore');
 var User = require('../models/user');
 
 exports.register= function(req,res){
 	res.render('register',{
-		title: '爱生活，爱电影',
+		title: '电影交流平台'
 	})
-}
+};
 
 exports.signin = function(req,res){
 	var _user = req.body.user;
@@ -54,14 +55,14 @@ exports.signup = function(req,res){
 			});
 		}
 	})
-}
+};
 	
 exports.logout = function(req,res){
 	delete req.session.user;
 	res.redirect('back')
-}
+};
 
-exports.list = function(req,res){	
+exports.userlist = function(req,res){
 	User.fetch(function(err,users){
 		if(err) console.log(err);
 		res.render('user_list',{
@@ -69,7 +70,8 @@ exports.list = function(req,res){
 			users: users
 		})	
 	})
-}
+};
+
 
 // 登陆控制
 exports.signinRequired = function(req,res,next){
@@ -88,4 +90,18 @@ exports.adminRequired = function(req,res,next){
 		return res.redirect('/');
 	}
 	next();
-}
+};
+
+exports.userDelete = function(req,res){
+    var id = req.query.id;
+    console.log(id);
+    if(id){
+        User.delete(id,function(err,user){
+            if(err){
+                console.log(err);
+            } else {
+                res.json({'success': true});
+            }
+        })
+    }
+};

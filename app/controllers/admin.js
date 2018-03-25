@@ -2,9 +2,9 @@ var Keyword = require('../models/keyword');
 
 exports.index= function(req, res) {
 	res.render('admin',{
-		title: '后台管理',
+		title: '后台管理'
 	})
-}
+};
 
 exports.keywordList = function(req,res){	
 	Keyword.fetch(function(err,keywords){
@@ -14,7 +14,7 @@ exports.keywordList = function(req,res){
 			keywords: keywords
 		})	
 	})
-}
+};
 
 exports.keywordDelete = function(req,res){
 	var id = req.query.id;
@@ -28,4 +28,4 @@ exports.keywordDelete = function(req,res){
 			}	
 		})
 	}
-}
+};
