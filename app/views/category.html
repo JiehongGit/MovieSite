@@ -3,7 +3,7 @@
 <head>
 	<title>{{title}}</title>
 	{{include '/include/head'}}
-	<link rel="stylesheet" href="/css/addEdit.css">
+	<link rel="stylesheet" href="/css/addMovie.css">
 </head>
 <body>
 	<div class="container">
@@ -13,7 +13,7 @@
 				<input type="text" class="form-control" name="category[name]" placeholder="分类名称" value="{{category.name}}">
 			</div>
 			<input type="hidden" name="category[_id]" value="{{category.id}}">
-			<button type="submit" class="btn btn-primary" id="submitForm"><i class="fa fa-save"></i>提交</button>
+			<button type="submit" class="btn btn-primary" id="submitForm"><i class="fa fa-save"></i>保存并修改</button>
 		</form>
 	</div>
 	<script type="text/javascript" src="/js/category.js"></script>

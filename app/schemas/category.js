@@ -17,6 +17,7 @@ var CategorySchema = new Schema({
   }
 })
 
+// 为模式添加新的方法, movieSchema.pre 表示每次存储数据之前都先调用这个方法
 CategorySchema.pre('save', function(next) {
   if (this.isNew) {
     this.meta.createAt = this.meta.updateAt = Date.now()
@@ -28,6 +29,7 @@ CategorySchema.pre('save', function(next) {
   next()
 })
 
+// CategorySchema模式的静态方法
 CategorySchema.statics = {
 	fetch: function(cb){
 		return this.find({}).sort('meta.updateAt').exec(cb);
@@ -40,4 +42,5 @@ CategorySchema.statics = {
 	},
 }
 
+// 导出movieSchema模式
 module.exports = CategorySchema

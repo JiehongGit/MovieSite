@@ -11,12 +11,14 @@
 	<table class="table table-list">
 		<thead>
 			<tr class="table-title">
-				<th scope="col" colspan="4">{{title}}</th>
+				<th scope="col" colspan="5">{{title}}</th>
 			</tr>
 			<tr class="table-header">
 				<th width="10%">ID</th>
-				<th width="50%">关键词</th>
-				<th width="20%">搜索次数</th>
+				<th width="23%">搜索热词</th>
+				<th width="12%">搜索次数累计</th>
+				<th width="25%">首次搜索时间</th>
+				<!-- <th width="20%">最近搜索时间</th> -->
 				<th width="20%">操作</th>
 			</tr>
 		</thead>
@@ -26,7 +28,9 @@
         	<tr>
         		<td>{{index + 1}}</td>
         		<td>{{keyword.keyword}}</td>
-        		<td>{{keyword.count}}</td>
+				<td>{{keyword.count}}</td>
+				<td>{{moment(keyword.meta.createAt).format('YYYY-MM-DD HH:mm:ss')}}</td>
+				<!-- <td>{{moment(keyword.meta.updateAt).format('YYYY-MM-DD H:mm:ss')}}</td> -->
         		<td>
         			<a href="javascript:;" class="btn-opt" onclick="delete_key(this,'{{keyword.id}}')"><i class="fa fa-trash-o"></i></a>
         		</td>

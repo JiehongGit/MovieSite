@@ -10,7 +10,9 @@
 {{include '/include/nav-search'}}
 <div class="container">
 	<div class="row">
-		<h2 class="movie-name">{{movie.title}}</h2>
+		<h1 class="movie-name">《{{movie.title}}》</h1>
+		<!-- 横线分割 -->
+		<hr style="margin-bottom:30px; background-color:#666666; height: 3px;"/>
 		<div class="col-md-6 clearfix">
 			<div class="main-post col-md-3">
 				<img src="{{movie.poster}}">
@@ -19,11 +21,18 @@
 				<p><span class="title">导演:</span>{{movie.director}}</p>
 				<p><span class="title">主演:</span>{{movie.actors}}</p>
 				<p><span class="title">语言:</span>{{movie.language}}</p>
-				<p><span class="title">制片国家:</span>{{movie.country}}</p>
+				<!-- {{each category as item}}
+				{{if item.movies && item.movies.length>0}}
+					{{each item.movies}}
+						<p><span class="title">类型:</span>{{item.name}}</p>
+					{{/each}}
+				{{/if}}
+				{{/each}} -->
+				<p><span class="title">制片国家/地区:</span>{{movie.country}}</p>
 				<p><span class="title">上映时间:</span>{{movie.year}}</p>
 			</div>
 			<div class="summary col-md-12">
-				<div class="alert alert-success">剧情简介</div>
+				<div class="alert alert-info">剧情简介</div>
 				<p>{{movie.summary}}</p>
 			</div>
 		</div>
@@ -31,17 +40,25 @@
 			<div class="panel panel-default ranks">
 				<div class="panel-heading">预告片观看</div>
   				<div class="panel-body">
-  					{{if movie.flash}}
-					<video src="{{movie.flash}}", allowFullScreen="true", width="522", height="300", align="middle", controls="controls")></video>
-					<div class="panel-heading">资源下载</div>
-  						<input class="form-control" type="text" value="{{movie.flash}}">
+  					{{if movie.trailer}}
+					<video src="{{movie.trailer}}", allowFullScreen="true", width="522", height="300", align="middle", controls="controls")></video>
   					{{else}}
   					<input class="form-control" type="text" disabled value="暂无资源">
   					{{/if}}
-  				</div>
+				</div>
+				<div class="panel-heading">资源下载</div>
+				<div class="panel-body">  
+					{{if movie.download}}
+					<input class="form-control" type="text" value="{{movie.download}}">
+					{{else}}
+					<input class="form-control" type="text" disabled value="暂无资源">
+					{{/if}}
+				</div> 
 			</div>
 		</div>
 	</div>
+
+	<div class="alert alert-success" style="margin-top:30px;">电影评论区</div>
 	<div class="comment-panel">
 		<ul class="comments-list">
 			<li class="comment-title">评论列表</li>
@@ -59,8 +76,9 @@
 					<div class="comment-content">
 						{{comment.content}}
 					</div>
-					<p class="toolbar clearfix">
-						<span class="fl">{{comment.createtime}}</span>
+					<p class="toolbar clearfix">					
+						<!-- <span class="fl">{{comment.createtime}}</span> -->
+						<span class="fl">{{moment(comment.meta.createAt).format('YYYY-MM-DD H:mm:ss')}}</span>
 						<a href="#replay-box" data-cid="{{comment.id}}" toUser="{{comment.from.name}}" userId="{{comment.from.id}}" class="fr">回复</a>
 					</p>
 				</div>
@@ -80,7 +98,7 @@
 								{{reply.content}}
 							</div>
 							<p class="toolbar clearfix">
-								<span class="fl">{{reply.createtime}}</span>
+								<span class="fl">{{moment(reply.meta.createAt).format('YYYY-MM-DD H:mm:ss')}}</span>
 								<a href="#replay-box" data-cid="{{comment.id}}" toUser="{{reply.from.name}}" userId="{{reply.from.id}}" class="fr">回复</a>
 							</p>
 						</div>
@@ -112,7 +130,7 @@
 			 </form>
 		{{else}}
 		 <div class="nologin">
-		 	只有登录了才能参与评论，快<a href="/register#signin">登录</a>！如果你还没有账号你可以<a href="/register#signup">注册</a>一个账号。
+		 	<a href="/register#signin" style="color:#FF3030">登录</a>了才能参与评论。如果你还没有账号快来<a href="/register#signup" style="color:#FF3030">注册</a>一个吧！
 		 </div>
 		{{/if}}
 		</div>

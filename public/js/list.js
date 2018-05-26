@@ -1,12 +1,19 @@
 var atarget = $('.table-header th').size() -1; 
 
 $('.table-list').dataTable({
-	"aaSorting": [[ 0, "asc" ]],//默认第几个排序
-	"bStateSave": false,//状态保存
+	/* 指定按多列数据排序的依据 */
+	"aaSorting": [[ 0, "asc" ]], // 默认第几个排序
+
+	/* 开关，是否打开客户端状态记录功能。
+	这个数据是记录在cookies中的，打开了这个记录后，即使刷新一次页面，或重新打开浏览器，之前的状态都是保存下来的 */
+	"bStateSave": false, // 状态保存
+	
+	/* 设置列的属性时，可以任意指定列，并且不需要给所有列都设置 */
 	"aoColumnDefs": [
-//	  {"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-	  {"orderable":false,"aTargets":[atarget]}// 制定列不参与排序
+	  {"orderable":false,"aTargets":[atarget]} // 制定列不参与排序
 	],
+
+	/* 改变语言 */
 	"oLanguage" : {
         "sLengthMenu": "显示 _MENU_ 条数据",
         "sZeroRecords": "抱歉， 没有找到",
@@ -85,7 +92,7 @@ function show_layer(title,url,w,h){
 	layer.open({
 		type: 2,
 		area: [w+'px', h +'px'],
-		fix: false, //不固定
+		fix: false, // 不固定
 		maxmin: true,
 		shade:0.4,
 		title: title,

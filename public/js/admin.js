@@ -34,7 +34,7 @@ $(document).ready(function() {
 		var e = $("body > #wrapper").height() - 61;
 		$(".sidebard-panel").css("min-height", e + "px")
 	}
-//	$("#side-menu").metisMenu(),
+	// 打开右侧边栏
 	$(".right-sidebar-toggle").click(function() {
 		$("#right-sidebar").toggleClass("sidebar-open")
 	}),

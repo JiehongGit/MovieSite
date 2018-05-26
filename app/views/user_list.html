@@ -11,14 +11,17 @@
 	<table class="table table-list">
 		<thead>
 			<tr class="table-title">
-				<th scope="col" colspan="4">{{title}}</th>
+				<th scope="col" colspan="7">{{title}}</th>
 			</tr>
 			<tr class="table-header">
-				<th width="20%">ID</th>
-				<th width="20%">用户名</th>
-				<!--<th width="20%">时间</th>-->
-				<th width="30%">角色</th>
-				<th width="30%">操作</th>
+				<th width="10%">ID</th>
+				<th width="15%">用户名</th>
+				<th width="25%">用户密码</th>
+				<!-- <th width="20%">邮箱</th> -->
+				<!-- <th width="20%">最近登录时间</th> -->
+				<th width="25%">注册时间</th>
+				<th width="15%">角色</th>
+				<th width="10%">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -27,18 +30,20 @@
         	<tr>
         		<td>{{index + 1}}</td>
         		<td>{{user.name}}</td>
-				<!--<td>{{user.meta.createAt}}</td>-->
+				<td>{{user.password}}</td>
+				<!-- <td>{{user.email}}</td> -->
+				<td>{{moment(user.meta.createAt).format('YYYY-MM-DD HH:mm:ss')}}</td>
         		<td>
         			{{if user.role<10}}
-        				<span class="label label-success">普通用户</span>
+						<span class="label label-success">普通用户</span>
         			{{else if user.role>=10&&user.role<50}}
         				<span class="label label-warning">管理员</span>
         			{{else if user.role>=50}}
         				<span class="label label-danger">超级管理员</span>
         			{{/if}}
         		</td>
-			<td>
-                                <!-- <button type="button" data-id="item._id" class="btn btn-danger del">删除</button> -->
+				<td>
+                    <!-- <button type="button" data-id="item._id" class="btn btn-danger del">删除</button> -->
         			<a href="javascript:;" class="btn-opt" onclick="delete_user(this,'{{user.id}}')"><i class="fa fa-trash-o"></i></a>
         		</td>
         	</tr>

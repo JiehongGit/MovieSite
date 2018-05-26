@@ -12,7 +12,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-9 col-xs-12">
-			<div class="alert alert-info">搜索关键词：{{keyword}}</div>
+			<div class="alert alert-info">{{keyword}}</div>
 			{{if movies && movies.length>0}}
 			{{each movies as movie}}
 			<div class="media movie-list">
@@ -37,14 +37,14 @@
 			{{/if}}
 		</div>
 		<div class="col-md-3 col-xs-12">
-			<div class="panel panel-success">
+			<div class="panel panel-danger">
 				<div class="panel-heading">热搜关键词</div>
   				<div class="panel-body">
   					{{if keywords && keywords.length}}
   					{{each keywords}}
-  					<a href="/search?search_text={{$value.keyword}}" class="search-link"><span class="label label-default">{{$value.keyword}}</span></a>
+  					<a href="/search?search_text={{$value.keyword}}" class="search-link"><span class="label label-danger">{{$value.keyword}}</span></a>
   					{{/each}}
-  					{{else}}
+					{{else}}
   					<p class="text-center">暂无搜索记录</p>
   					{{/if}}
   				</div>

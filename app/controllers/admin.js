@@ -1,4 +1,4 @@
-var Keyword = require('../models/keyword');
+const Keyword = require('../models/keyword');
 
 exports.index= function(req, res) {
 	res.render('admin',{
@@ -17,7 +17,7 @@ exports.keywordList = function(req,res){
 };
 
 exports.keywordDelete = function(req,res){
-	var id = req.query.id;
+	let id = req.query.id;
 
 	if(id){
 		Keyword.delete(id,function(err,keyword){

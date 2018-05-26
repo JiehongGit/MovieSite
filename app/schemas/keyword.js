@@ -1,17 +1,12 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
-var oDate = require("../../libs/date");
 
 var KeywordSchema = new mongoose.Schema({
 	keyword: String,
 	count: {
 		type: Number,
 		default: 0
-	},
-	createtime: {
-		type: String,
-		default: oDate.Format("yyyy-MM-dd HH:mm:ss")
 	},
 	meta:{
 		createAt:{
@@ -25,6 +20,7 @@ var KeywordSchema = new mongoose.Schema({
 	}
 })
 
+// 为模式添加新的方法
 KeywordSchema.pre('save',function(next){
 	if(this.isNew){
 		this.meta.createAt = this.meta.updateAt = Date.now();
@@ -33,6 +29,8 @@ KeywordSchema.pre('save',function(next){
 	}
 	next();
 })
+
+// 静态方法不会与数据库直接交互，需要经过模型编译实例化后才会具有该方法
 KeywordSchema.statics = {
 	fetch: function(cb){
 		return this.find({}).sort('meta.updateAt').exec(cb);
@@ -44,4 +42,5 @@ KeywordSchema.statics = {
 		return this.remove({_id: id}).exec(cb);
 	},
 }
+
 module.exports = KeywordSchema;

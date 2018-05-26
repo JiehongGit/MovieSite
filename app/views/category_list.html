@@ -14,27 +14,31 @@
 				<i class="fa fa-plus"></i> 添加分类
 			</a>
 		</span> 
-		<span class="fr">共有数据：<strong>{{categorys.length}}</strong> 条</span> 
+		<span class="fr">共有数据：<strong>{{categories.length}}</strong> 条</span> 
 	</div>
 	<table class="table table-list">
 		<thead>
 			<tr class="table-title">
-				<th scope="col" colspan="4">{{title}}</th>
+				<th scope="col" colspan="6">{{title}}</th>
 			</tr>
 			<tr class="table-header">
-				<th width="20%">ID</th>
+				<th width="10%">ID</th>
 				<th width="20%">分类名称</th>
-				<th width="30%">电影数量</th>
-	            <th width="30%">操作</th>
+				<th width="10%">电影数量</th>
+				<th width="22%">添加时间</th>
+				<th width="22%">更新时间</th>
+	            <th width="16%">操作</th>
 			</tr>
 		</thead>
 		<tbody>
-			{{if categorys.length}}
-        	{{each categorys as category index}}
+			{{if categories.length}}
+        	{{each categories as category index}}
         	<tr>
         		<td>{{index + 1}}</td>
         		<td>{{category.name}}</td>
-        		<td>{{category.movies.length}}</td>
+				<td>{{category.movies.length}}</td>
+				<td>{{moment(category.meta.createAt).format('YYYY-MM-DD HH:mm')}}</td>
+				<td>{{moment(category.meta.updateAt).format('YYYY-MM-DD HH:mm')}}</td>
         		<td>
         			<a href="javascript:;" onClick="show_layer('分类编辑','/admin/category/edit/{{category.id}}','600','300')" class="btn-opt"><i class="fa fa-pencil"></i></a>
         			<a href="javascript:;" class="btn-opt" onclick="delete_cat(this,'{{category.id}}')"><i class="fa fa-trash-o"></i></a>

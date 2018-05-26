@@ -1,0 +1,122 @@
+/* .nav-logo p{color:#E3E3E3; font-size:1em; font-weight:bold; font-family:"微软雅黑";}
+
+.nav-logo p span {
+  display:inline-block;
+  position:relative;
+  -webkit-transform-style:preserve-3d;
+          transform-style:preserve-3d;
+}
+p span::before,
+p span::after {
+  display:none;
+  position:absolute;
+  top:0;
+  left:-1px;
+  -webkit-transform-origin:left top;
+      -ms-transform-origin:left top;
+          transform-origin:left top;
+  -webkit-transition:all ease-out 0.3s;
+          transition:all ease-out 0.3s;
+  content:attr(data-text);
+}
+p span::before {
+  z-index:1;
+  color:#E0EEEE;
+  
+}
+p span::after {
+  z-index:5;
+  color:#242424;
+  text-shadow:-1px 0 1px #242424, 1px 0 1px rgba(0,0,0,0.8);
+  -webkit-transform:rotateY(-40deg);
+          transform:rotateY(-40deg);
+}
+p span:hover::before {
+  -webkit-transform:scale(1.1, 1) skew(0deg, 5deg);
+      -ms-transform:scale(1.1, 1) skew(0deg, 5deg);
+          transform:scale(1.1, 1) skew(0deg, 5deg);
+}
+p span:hover::after {
+  -webkit-transform:rotateY(-10deg);
+          transform:rotateY(-10deg);
+}
+p span + span {
+  margin-left:0.2em;
+}
+@media (min-width:2em) {
+  .nav-logo p {
+    font-size:2em;
+  }
+  .nav-logo p span::before,
+  .nav-logo p span::after {
+    display:block;
+  }
+}
+@media (min-width:5em) {
+  .nav-logo p {
+    font-size:5em;
+  }
+} */
+
+.nav-logo {
+  width: 600px;
+  margin: auto;
+}
+.nav-logo a{
+  font-weight: bold;
+  text-align: center;
+  color: #228DFF;
+  font-size: 4em;
+  -webkit-transition: all 1.5s ease;
+          transition: all 1.5s ease;
+}
+.nav-logo a:hover {
+  color: #fff;
+  -webkit-animation: Glow 1.5s ease infinite alternate;
+          animation: Glow 1.5s ease infinite alternate;
+
+}
+@-webkit-keyframes Glow {
+  from {
+      text-shadow: 0 0 10px #fff,
+                   0 0 20px #fff,
+                   0 0 30px #fff,
+                   0 0 40px #228DFF,
+                   0 0 70px #228DFF,
+                   0 0 80px #228DFF,
+                   0 0 100px #228DFF,
+                   0 0 150px #228DFF;
+  }
+  to {
+      text-shadow: 0 0 5px #fff,
+                   0 0 10px #fff,
+                   0 0 15px #fff,
+                   0 0 20px #228DFF,
+                   0 0 35px #228DFF,
+                   0 0 40px #228DFF,
+                   0 0 50px #228DFF,
+                   0 0 75px #228DFF;
+  }
+}
+@keyframes Glow {
+  from {
+      text-shadow: 0 0 10px #fff,
+                   0 0 20px #fff,
+                   0 0 30px #fff,
+                   0 0 40px #228DFF,
+                   0 0 70px #228DFF,
+                   0 0 80px #228DFF,
+                   0 0 100px #228DFF,
+                   0 0 150px #228DFF;
+  }
+  to {
+      text-shadow: 0 0 5px #fff,
+                   0 0 10px #fff,
+                   0 0 15px #fff,
+                   0 0 20px #228DFF,
+                   0 0 35px #228DFF,
+                   0 0 40px #228DFF,
+                   0 0 50px #228DFF,
+                   0 0 75px #228DFF;
+  }
+}

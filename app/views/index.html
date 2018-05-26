@@ -4,14 +4,62 @@
 	<title>{{title}}</title>
 	{{include '/include/head'}}
 	<link rel="stylesheet" href="/css/index.css">
+	<link rel="stylesheet" href="/css/returnTop.css">
 </head>
 <body>
 {{include '/include/nav-top'}}
 {{include '/include/nav-search'}}
+
 <div class="container">
 	<div class="row">
 		<div class="col-md-9 col-xs-12" >
-			<div class="alert alert-info">所有电影</div>
+			<div id="myCarousel" class="carousel slide" data-interval="2000">
+				<!-- 轮播（Carousel）指标 -->
+				<ol class="carousel-indicators">
+					<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+					<li data-target="#myCarousel" data-slide-to="1"></li>
+					<li data-target="#myCarousel" data-slide-to="2"></li>
+					<li data-target="#myCarousel" data-slide-to="3"></li>
+				</ol>   
+				<!-- 轮播（Carousel）项目 -->
+				<div class="carousel-inner">
+					<div class="item active">
+						<!-- 头号玩家 -->
+						<a href="/movie/5ae40ca02840291704571c8e">
+							<img src="/images/poster/1.webp" alt="First slide" style="width: 1500px; height:340px">
+						</a>
+					</div>
+					<div class="item">
+						<!-- 环太平洋 -->
+						<a href="/movie/5ae402deddb6ef11680a6774">
+							<img src="/images/poster/2.webp" alt="Second slide" style="width: 1500px; height:340px">
+						</a>
+					</div>
+					<div class="item">
+						<!-- 黑豹 -->
+						<a href="/movie/5ae40adb2840291704571c8b">
+							<img src="/images/poster/3.webp" alt="Third slide" style="width: 1500px; height:340px">
+						</a>
+					</div>
+					<div class="item">
+						<!-- 红海行动 -->
+						<a href="/movie/5ae40d192840291704571c8f">
+							<img src="/images/poster/4.webp" alt="Third slide" style="width: 1500px; height:340px">
+						</a>
+					</div>
+				</div>
+				<!-- 轮播（Carousel）导航 -->
+				<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+		
+			<div class="alert alert-success" style="margin-top:15px">所有电影</div>
 			<div id="movie-container">
 			{{each category as item}}
 			{{if item.movies && item.movies.length>0}}
@@ -31,14 +79,17 @@
 						</h3>
 						<div class="info">
 							<span class="info-data">
+								<!-- 点击率 -->
 								<span class="glyphicon glyphicon-eye-open"></span>
 								{{$value.pv}}
 							</span>
 							<span class="info-data">
+								<!-- 评论数 -->
 								<span class="fa fa-comment"></span>
 								{{$value.comments}}
 							</span>
 							<span class="info-data">
+								<!-- 电影类别 -->
 								<span class="glyphicon glyphicon-film"></span>
 								<a href="/search?cat={{item.id}}&p=0">{{item.name}}</a>
 							</span>
@@ -52,7 +103,7 @@
 		</div>
 		<div class="col-md-3 col-xs-12">
 			<div class="panel panel-danger ranks">
-				<div class="panel-heading">热门电影</div>
+				<div class="panel-heading">热门电影排行榜</div>
   				<div class="panel-body">
   					{{if ranks && ranks.length}}
 	    			{{each ranks as movie index}}
@@ -66,13 +117,13 @@
 	    			{{/if}}
   				</div>
 			</div>
-			<div class="panel panel-warning categorys">
-				<div class="panel-heading">全部分类</div>
+			<div class="panel panel-info categories">
+				<div class="panel-heading">电影分类</div>
   				<div class="panel-body">
   					{{if category && category.length}}
 	    			{{each category as item}}
-					<a class="btn btn-primary ba-mb-5" href="/search?cat={{item.id}}&p=0">
-					  	{{item.name}} <span class="badge">{{item.movies.length}}</span>
+					<a class="btn btn-info btn-lg btn-block" href="/search?cat={{item.id}}&p=0">{{item.name}}&nbsp;&nbsp;
+						<span class="badge">{{item.movies.length}}</span>
 					</a>
 					{{/each}}
 					{{else}}
@@ -83,7 +134,14 @@
 		</div>
 	</div>
 </div>
+<!-- 返回顶部火箭 -->
+<div style="display:none;" id="rocket-to-top">
+	<div style="opacity:0;display:block;" class="level-2"></div>
+	<div class="level-3"></div>
+</div>
 {{include '/include/footer'}}
 <script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/returnTop.js"></script>
+<script type="text/javascript" src="/libs/jquery/jquery.js"></script>
 </body>
 </html>

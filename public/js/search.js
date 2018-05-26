@@ -70,6 +70,7 @@ var vm = new Vue({
     	pageCurrent: pageCurrent,
     },
     watch:{
+        /*此处监听pageCurrent值的变化，发送请求*/
     	pageCurrent:function(){
       		var url = window.location.href;
       		var page = this.pageCurrent - 1;
